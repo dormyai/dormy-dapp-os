@@ -5,6 +5,7 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite';
 import { ArcoResolver } from 'unplugin-vue-components/resolvers';
+import postCssPxToRem from 'postcss-pxtorem';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,13 +31,21 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         modifyVars: {
-          'arcoblue-6': '#f85959',
+          // 'arcoblue-6': '#f85959',
           // 'color-primary-6': '#13c2c2',
           // 'color-primary-6': `rgb(var(~'@{arco-cssvars-prefix}-green-6'))`
         },
         javascriptEnabled: true,
       }
-   }
+    },
+    postcss:{
+      plugins:[
+        postCssPxToRem({
+          rootValue: 50,
+          propList:['*'],
+        })
+      ]
+    }
   },
   resolve: {
     alias: {

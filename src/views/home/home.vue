@@ -6,6 +6,7 @@
                 <component :is="Component" />
             </keep-alive>
         </main>
+        <Footer></Footer>
     </router-view>
 </template>
 

@@ -1,13 +1,7 @@
 <template>
-    <header class="stiky top-0 w-full flex items-center px-4">
-        <Logo class="w-6" />
+    <header class="stiky top-0 w-full flex items-center px-[0.8rem] md:px-[5.12rem]">
+        <Logo class="logo block w-[3.4rem]"/>
         <div class="flex items-center gap-x-4 ml-auto">
-            <nav class="hidden md:flex items-center gap-x-4 text-md font-bold">
-                <a>Market</a>
-                <a>Market</a>
-                <a>Market</a>
-                <i class="i-solar-smile-circle-broken"></i>
-            </nav>
             <w3m-button :balance="'hide'"/>
         </div>
     </header>
@@ -43,10 +37,5 @@ onMounted(() => {
 header {
     box-sizing: border-box;
     height: var(--header-height);
-    nav {
-        a {
-            cursor: pointer;
-        }
-    }
 }
 </style>

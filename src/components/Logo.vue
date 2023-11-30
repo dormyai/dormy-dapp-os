@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-const logo = new URL('@/assets/vue.svg', import.meta.url).href
+const logo = new URL('@/assets/logo.png', import.meta.url).href
 </script>

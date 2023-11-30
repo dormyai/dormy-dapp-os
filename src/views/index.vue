@@ -1,92 +1,332 @@
 <template>
-    <section class="top-list">
-        <div class="card" v-for="item in topList">
-            <div class="card-info">
-                <img class="nft aspect-w-1 aspect-h-1" src="https://i.seadn.io/s/raw/files/33a413987337fb53186e65e937a99a31.png?auto=format&dpr=1&w=640" alt="">
-                <div class="operate-box flex items-center">
-                    <div class="item"><i class="i-solar-course-up-outline"></i></div>
-                    <div class="item"><i class="i-solar-like-broken"></i></div>
+
+    <div class="banner md:h-[16rem] bg-cover md:bg-contain">
+        <div class="inner md:w-[28rem]">
+            <div class="discription py-10 md:py-0">
+                <h1 data-aos="fade-up" data-aos-once="true">Your Fractional Real Estate Platform</h1>
+                <p data-aos="fade-up" data-aos-once="true">Get started with just £50 to invest in UK student housing and receive a stable rental income!</p>
+                <button data-aos="fade-up" data-aos-once="true" class="launch">Launch APP <icon-arrow-right /></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="instroduction px-4 text-center flex flex-col items-center">
+        <h1 data-aos="fade-up" data-aos-once="true">Why DormyAI is your better choice</h1>
+        <p data-aos="fade-up" data-aos-once="true">Powered by blockchain technology, DormyAI offers a secure, transparent, and simple investment experience</p>
+        <div class="mt-[1.8rem] grid md:w-[25rem] grid-cols-1 md:grid-cols-2 gap-y-[1.6rem] gap-x-[2.6rem]">
+            <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
+                <dt class="img-wrapper"><img class="block" :src="ICON01" alt=""></dt>
+                <dd class="font-bold">Secure Investment</dd>
+                <dd>Make investment by Web3 wallet to ensure security</dd>
+            </dl>
+            <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
+                <dt class="img-wrapper"><img :src="ICON02" alt=""></dt>
+                <dd class="font-bold">Transparent Transactions</dd>
+                <dd>Make investment by Web3 wallet to ensure security</dd>
+            </dl>
+            <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
+                <dt class="img-wrapper"><img :src="ICON03" alt=""></dt>
+                <dd class="font-bold">Efficient Buying Process</dd>
+                <dd>Make investment by Web3 wallet to ensure security</dd>
+            </dl>
+            <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
+                <dt class="img-wrapper"><img :src="ICON04" alt=""></dt>
+                <dd class="font-bold">Easy to Use</dd>
+                <dd>Make investment by Web3 wallet to ensure security</dd>
+            </dl>
+        </div>
+    </div>
+    
+    <div class="vedio-box text-center">
+        <h1>Get started with DormyAI</h1>
+        <p>Watch this short Video to get better understanding of DormyAI</p>
+    </div>
+
+    <div class="version-box">
+        <div class="inner md:w-[25rem] flex flex-col-reverse md:flex-row items-center gap-[3rem]">
+            <img class="version-img" :src="VERSION" data-aos="zoom-in" data-aos-once="true" alt="">
+            <div class="text-center px-8 md:px-0 md:text-left">
+                <h1 class="title" data-aos="fade-up" data-aos-once="true">Our Vision</h1>
+                <p class="des" data-aos="fade-up" data-aos-once="true">To pioneer a blockchain network of tokenised real-word assets, enabling small-scale investors to achieve fractional property ownership worldwide.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-box flex flex-col md:flex-row">
+        <div class="left flex-1 flex flex-col items-center justify-center">
+            <h1 class="title" data-aos="fade-up" data-aos-once="true">Our Mission</h1>
+            <p class="des" data-aos="fade-up" data-aos-once="true">To democratise access to global real estate investment opportunities.</p>
+        </div>
+        <div class="right flex-1">
+            <img class="w-[11.04rem] block" data-aos="fade-up" data-aos-once="true" :src="MISSION" alt="">
+        </div>
+    </div>
+
+    <div class="visiter-box flex flex-col items-center">
+        <h1 class="title" data-aos="fade-up" data-aos-once="true">What our investors say</h1>
+        <p class="des" data-aos="fade-up" data-aos-once="true">Learn from our community about their feelings and successful investment experiences</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-14 gap-y-4 mt-[1.8rem]">
+            <div class="item" data-aos="fade-up" data-aos-once="true">
+                <div class="item-inner bg-white">
+                    <div class="flex items-center">
+                        <img class="w-[1.28rem] block" :src="AVATAR01" alt="">
+                        <span class="font-bold text-[0.52rem] ml-[0.3rem]">Catherine_Y</span>
+                    </div>
+                    <img class="w-[2.74rem] block my-[0.2rem]" :src="START" alt="">
+                    <p class="text-[0.4rem]">At first I thought real estate investment was far away from me because I didn't have a lot of money. But through DormyAI I found it is not a problem any more!</p>
+                </div>
+            </div>
+            <div class="item" data-aos="fade-up" data-aos-once="true">
+                <div class="item-inner bg-white">
+                    <div class="flex items-center">
+                        <img class="w-[1.28rem] block" :src="AVATAR02" alt="">
+                        <span class="font-bold text-[0.52rem] ml-[0.3rem]">0xNotfomo.eth</span>
+                    </div>
+                    <img class="w-[2.74rem] block my-[0.2rem]" :src="START" alt="">
+                    <p class="text-[0.4rem]">I believe RWA will definitely be a great narrative in the next cycle. DormyAI is on the right path and hopes it can become the top fractional real estate platform in the future.</p>
+                </div>
+            </div>
+            <div class="item" data-aos="fade-up" data-aos-once="true">
+                <div class="item-inner bg-white">
+                    <div class="flex items-center">
+                        <img class="w-[1.28rem] block" :src="AVATAR03" alt="">
+                        <span class="font-bold text-[0.52rem] ml-[0.3rem]">Popypinko</span>
+                    </div>
+                    <img class="w-[2.74rem] block my-[0.2rem]" :src="START" alt="">
+                    <p class="text-[0.4rem]">The design of SFT and Fractional Title Deed is amazing! I had imagined the combination of NFT and real estate, but DormyAI gave me a big surprise! Now I want to get more Title deeds :)</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div data-aos="fade-up" data-aos-once="true" class="question-box flex flex-col md:flex-row justify-center items-center md:items-start bg-[#F9FAFF] color-[#2A2934]">
+        <img class="w-[10rem]" :src="QUESTON" alt="">
+        <div class="md:ml-[1.4rem]">
+            <h1 class="title">Frequently Asked Questions</h1>
+            <a-collapse class="collapse" :default-active-key="[1]" :expand-icon-position="'right'" :bordered="false">
+                <a-collapse-item header="Why should I invest in UK real estate? " key="1" :style="customStyle">
+                    <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
+                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
+                </a-collapse-item>
+                <a-collapse-item header="What are the unique benefits of investing in UK real estate compared with other countries?" key="1" :style="customStyle">
+                    <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
+                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
+                </a-collapse-item>
+                <a-collapse-item header="Why does DormyAI focus on the students' housing market?" key="1" :style="customStyle">
+                    <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
+                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
+                </a-collapse-item>
+            </a-collapse>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import { useAuthStore } from '@/store/auth'
-import { ref } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
+import { IconClose, IconArrowRight } from '@arco-design/web-vue/es/icon';
+import AOS from "aos";
+
+const Banner = new URL('@/assets/images/bg-banner.png', import.meta.url).href
+const ICON01 = new URL('@/assets/images/icon-secure.png', import.meta.url).href
+const ICON02 = new URL('@/assets/images/icon-transfer.png', import.meta.url).href
+const ICON03 = new URL('@/assets/images/icon-efficient.png', import.meta.url).href
+const ICON04 = new URL('@/assets/images/icon-easy.png', import.meta.url).href
+const VERSION = new URL('@/assets/images/pic-version.png', import.meta.url).href
+const MISSION = new URL('@/assets/images/mission-pic.webp', import.meta.url).href
+const AVATAR01 = new URL('@/assets/images/avatar01.png', import.meta.url).href
+const AVATAR02 = new URL('@/assets/images/avatar02.png', import.meta.url).href
+const AVATAR03 = new URL('@/assets/images/avatar03.png', import.meta.url).href
+const START = new URL('@/assets/images/icon_xing.png', import.meta.url).href
+const QUESTON = new URL('@/assets/images/qa-pic.png', import.meta.url).href
+
 
 const topList = ref([1,2,3,4,5])
+const customStyle = ref({
+    backgroundColor: '#F9FAFF',
+    border: 'none',
+    overflow: 'hidden',
+    color: '#64646C',
+    fontSize: '0.36rem',
+})
 
 const store = useAuthStore()
 const handleIncrece = () => {
     store.increment()
 }
+
+// onMounted
+onMounted(() => {
+    AOS.init();
+})
+
 </script>
 
 <style scoped lang="less">
-
-@gradient01: linear-gradient(to right, #373b44, #4286f4);
-@gradient02: linear-gradient(to right, #eecda3, #ef629f);
-@gradient03: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
-@gradient04: linear-gradient(to right, #11998e, #38ef7d);
-@gradient05: linear-gradient(to right, #30e8bf, #ff8235);
-
-.top-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 12px;
-    .card {
-        aspect-ratio: 1;
-        padding: 1px;
-        border-radius: 1rem;
-        overflow: visible;
-        background: @gradient04;
-        position: relative;
-        z-index: 1;
-        .card-info {
-            --color: #181818;
-            background: var(--color);
-            color: var(--color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            border-radius: 1rem;
-            overflow: hidden;
-
-            .nft {
-                max-inline-size: 100%;
+.banner {
+    background: url('../assets/images/bg-banner.png') no-repeat center bottom;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .inner {
+        // width: 1412px;
+        .discription {
+            width: 740px;
+            h1 {
+                font-size: 76px;
+                line-height: 1;
             }
+            > p {
+                font-size: 24px;
+                line-height: 1.4;
+                margin-top: 30px;
+            }
+            .launch {
+                font-size: 26px;
+                border: 1px solid #fff;
+                border-radius: 99PX;
+                background-color: transparent;
+                padding: 18px 52px;
+                margin-top: 82px;
+                color: var(--text-color);
+                cursor: pointer;
+            }
+        }
+    }
+}
 
-            .operate-box {
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                .item {
-                    transition: 0.2s ease-in-out;
-                    border-radius: 10px;
-                    margin: 5px;
-                    width: 30px;
-                    height: 30px;
-                    background-color: #ffffff;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 1px solid #F7F8FA;
-                    cursor: pointer;
-                    
-                    &:hover {
-                        transform: scale(1.1) rotate(10deg);
-                        box-shadow: 0 0 10px #0000000d;
-                    }
+.instroduction {
+    color: #2A2934;
+    background-color: #F6F9FC;
+    padding: 88px 0 134px;
+    h1 {
+        font-size: 54px;
+    }
+    p {
+        margin-top: 12px;
+        font-size: 20px;
+    }
+    .grid {
+
+        > dl {
+            background-color: white;
+            padding: 34px 134px;
+            box-shadow: 0px 0px 40px 0px rgba(192,202,213,0.08);
+            border-radius: 30px;
+            box-sizing: border-box;
+            .img-wrapper {
+                height: 108px;
+                img {
+                    width: 110px;
+                }
+            }
+            dd {
+                font-size: 22px;
+                max-width: 270px;
+                &:nth-of-type(1) {
+                    margin: 32px 0 10px;
+                }
+                &:nth-of-type(2) {
+                    color: #5E6F86;
+                    font-size: 18px;
+                    line-height: 1.1;
                 }
             }
         }
     }
 }
 
+.vedio-box {
+    color: #2A2934;
+    padding: 88px 0 134px;
+    h1 {
+        font-size: 54px;
+    }
+    p {
+        margin-top: 12px;
+        font-size: 20px;
+    }
+}
+
+.version-box {
+    background-color: #F9FAFF;
+    padding: 46px 0 72px;
+    color: #26364B;
+    .inner {
+        margin: 0 auto;
+
+        .version-img {
+            width: 720px;
+        }
+
+    }
+}
+
+.title {
+    font-size: 54px;
+}
+.des {
+    font-size: 20px;
+}
+
+.mission-box {
+    .left {
+        background: url('../assets/images/mission-d.webp') no-repeat right 369px bottom / 524px #26326E;
+        .des, .title {
+            width: 498px;
+        }
+    }
+    .right {
+        padding: 100px 0 100px 148px;
+        background: url('../assets/images/mission-bg.png') no-repeat center / cover;
+    }
+}
+
+.visiter-box {
+    color: #26364B;
+    padding: 90px 0 125px;
+    .item {
+        width: 374px;
+        border-radius: 20px;
+        padding: 20px 0 20px 24px;
+        &:nth-of-type(1) {
+            background: #39AEC0;
+        }
+        &:nth-of-type(2) {
+            background: #FAA37C;
+        }
+        &:nth-of-type(3) {
+            background: #3B5CFF;
+        }
+
+        .item-inner {
+            width: 414px;
+            box-shadow: 0px 9px 20px 0px rgba(0,0,0,0.11);
+            border-radius: 20px;
+            padding: 30px 30px 24px;
+            box-sizing: border-box;
+        }
+    }
+}
+
+.question-box {
+    padding: 80px 0 100px;
+    .qa {
+        color: #64646C;
+        font-size: 18px;
+    }
+    .collapse {
+        width: 712px;
+        /deep/ .arco-collapse-item-header {
+            background-color: transparent;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            .arco-collapse-item-header-title {
+                font-size: 22px;
+                font-weight: bold;
+            }
+        }
+    }
+}
 </style>
