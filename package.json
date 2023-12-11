@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
-    "build": "vite build --mode production",
-    "preview": "vite preview --mode staging"
+    "build": "rm -f ./dist.zip && vite build --mode production && zip -r dist.zip dist",
+    "preview": "rm -f ./dist.zip && vite preview --mode staging && zip -r dist.zip dist"
   },
   "dependencies": {
     "@wagmi/core": "^1.4.3",

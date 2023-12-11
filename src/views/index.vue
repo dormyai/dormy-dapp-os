@@ -38,8 +38,11 @@
     </div>
     
     <div class="vedio-box text-center">
-        <h1>Get started with DormyAI</h1>
-        <p>Watch this short Video to get better understanding of DormyAI</p>
+        <h1 data-aos="fade-up" data-aos-once="true">Get started with DormyAI</h1>
+        <p data-aos="fade-up" data-aos-once="true">Watch this short Video to get better understanding of DormyAI</p>
+        <div class="w-[21.8rem] mx-auto mt-4" data-aos="fade-up" data-aos-once="true">
+            <iframe class="w-[21.8rem] h-[12.24rem] mx-auto rounded-[0.5rem]" src="https://www.youtube.com/embed/7Y1yDUJe8sY?si=tBSMx1plUdVslXxT"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen frameborder="0"></iframe>
+        </div>
     </div>
 
     <div class="version-box">
@@ -58,7 +61,7 @@
             <p class="des" data-aos="fade-up" data-aos-once="true">To democratise access to global real estate investment opportunities.</p>
         </div>
         <div class="right flex-1">
-            <img class="w-[11.04rem] block" data-aos="fade-up" data-aos-once="true" :src="MISSION" alt="">
+            <img class="w-[11.04rem] block" data-aos="zoom-in" data-aos-once="true" :src="MISSION" alt="">
         </div>
     </div>
 
@@ -76,7 +79,7 @@
                     <p class="text-[0.4rem]">At first I thought real estate investment was far away from me because I didn't have a lot of money. But through DormyAI I found it is not a problem any more!</p>
                 </div>
             </div>
-            <div class="item" data-aos="fade-up" data-aos-once="true">
+            <div class="item" data-aos="fade-up" data-aos-once="true" data-aos-delay="50">
                 <div class="item-inner bg-white">
                     <div class="flex items-center">
                         <img class="w-[1.28rem] block" :src="AVATAR02" alt="">
@@ -86,7 +89,7 @@
                     <p class="text-[0.4rem]">I believe RWA will definitely be a great narrative in the next cycle. DormyAI is on the right path and hopes it can become the top fractional real estate platform in the future.</p>
                 </div>
             </div>
-            <div class="item" data-aos="fade-up" data-aos-once="true">
+            <div class="item" data-aos="fade-up" data-aos-once="true" data-aos-delay="100">
                 <div class="item-inner bg-white">
                     <div class="flex items-center">
                         <img class="w-[1.28rem] block" :src="AVATAR03" alt="">
@@ -103,18 +106,15 @@
         <img class="w-[10rem]" :src="QUESTON" alt="">
         <div class="md:ml-[1.4rem]">
             <h1 class="title">Frequently Asked Questions</h1>
-            <a-collapse class="collapse" :default-active-key="[1]" :expand-icon-position="'right'" :bordered="false">
-                <a-collapse-item header="Why should I invest in UK real estate? " key="1" :style="customStyle">
+            <a-collapse class="collapse" :default-active-key="[]" :expand-icon-position="'right'" :bordered="false">
+                <a-collapse-item 
+                    v-for="item,index in questions" 
+                    :key="index" 
+                    :header="item.question" 
+                    :style="customStyle"
+                >
                     <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
-                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
-                </a-collapse-item>
-                <a-collapse-item header="What are the unique benefits of investing in UK real estate compared with other countries?" key="1" :style="customStyle">
-                    <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
-                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
-                </a-collapse-item>
-                <a-collapse-item header="Why does DormyAI focus on the students' housing market?" key="1" :style="customStyle">
-                    <template #expand-icon="{ active }"><icon-close class="transition-all transform" :class="[active?'rotate-90':'rotate-45' ]" :style="{fontSize:'14px'}" /></template>
-                    <p class="qa">Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment.</p>
+                    <p class="qa">{{ item.answer }}</p>
                 </a-collapse-item>
             </a-collapse>
         </div>
@@ -140,7 +140,32 @@ const AVATAR03 = new URL('@/assets/images/avatar03.png', import.meta.url).href
 const START = new URL('@/assets/images/icon_xing.png', import.meta.url).href
 const QUESTON = new URL('@/assets/images/qa-pic.png', import.meta.url).href
 
-
+const questions = ref([
+  {
+    "question": "How DormyAI works?",
+    "answer": "DormyAI is a Real-World Asset (RWA) platform specializing in tokenizing UK properties. Each property listed on DormyAI is owned by a DAO LLC. This DAO LLC is then tokenized into Square Foot Tokens (SFTs) on the blockchain. When an SFT is purchased, it signifies that the buyer has acquired one square foot of the corresponding property."
+  },
+  {
+    "question": "What's SFT? Is it an ERC-20 Token?",
+    "answer": "The Square Foot Token (SFT) is a pioneered token type introduced by DormyAI, representing one square foot of a specific property. SFTs follow the ERC3525 standard, combining features of both ERC20 and ERC721 standards. SFTs of the same property can be combined into a whole unit like an ERC721 NFT or be split like ERC20 tokens."
+  },
+  {
+    "question": "What's fractional title deed?",
+    "answer": "On the DormyAI platform, SFT is presented as a fractional title deed of the corresponding property. It is a digital version of the title deed, representing fractional ownership of the property. It holds the same legal validity as the physical counterpart."
+  },
+  {
+    "question": "Why should I invest in UK real estate?",
+    "answer": "Investing in UK real estate can offer several advantages, including a stable and transparent legal system, a strong rental market, potential for capital appreciation, and a diversified property portfolio. The UK also has a robust economy and a reputation for property investment."
+  },
+  {
+    "question": "What are the unique benefits of investing in UK real estate compared with other countries?",
+    "answer": "The UK real estate market is known for its stability, well-established legal framework, and attractive rental yields. Additionally, London, in particular, is considered a global financial hub, attracting international investors. The UK offers a diverse range of property types, from residential to commercial, and it has a history of strong property price growth."
+  },
+  {
+    "question": "Why does DormyAI focus on the students' housing market?",
+    "answer": "DormyAI focuses on the student housing market due to its potential for steady rental income and long-term demand. Student housing can be a resilient investment sector because universities tend to have a consistent influx of students seeking accommodation."
+  }
+])
 const topList = ref([1,2,3,4,5])
 const customStyle = ref({
     backgroundColor: '#F9FAFF',
