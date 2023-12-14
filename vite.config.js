@@ -43,6 +43,7 @@ export default defineConfig({
         postCssPxToRem({
           rootValue: 50,
           propList:['*'],
+          exclude: /node_modules/i
         })
       ]
     }

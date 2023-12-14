@@ -23,6 +23,16 @@ let routes = [
           deepth: 0.1 // 定义路由的层级
         }
       },
+      {
+        path: '/market',
+        component: () => import("@/views/marketplace/marketplace.vue"),
+        name: 'Marketplace',
+        meta: {
+          loginRequired: false,
+          keepAlive: true, // 需要缓存
+          deepth: 0.1 // 定义路由的层级
+        }
+      },
     ],
   },
   { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/' },

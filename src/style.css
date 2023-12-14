@@ -2,6 +2,10 @@
   --header-height: 120px;
   --bg-theme-color: #ffffff;
   --text-color: rgba(255, 255, 255, 0.87);
+
+  --footer-bg: #091823;
+  --footer-text: white;
+  --footer-input: white;
 }
 
 html {
