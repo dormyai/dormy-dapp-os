@@ -1,24 +1,13 @@
-<template>
-    <header class="sticky top-0 w-full flex items-center px-[0.8rem] md:px-[5.12rem] gap-x-[1.44rem]">
-        <Logo class="logo block w-[3.4rem]"/>
-        <router-link to="/">Home</router-link>
-        <router-link to="/market">Marketplace</router-link>
-        <router-link to="/">Dashboard</router-link>
-        <router-link to="/">Docs</router-link>
-        <div class="flex items-center gap-x-4 ml-auto">
-            <w3m-button :balance="'hide'"/>
-        </div>
-    </header>
-</template>
-
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getAccount } from '@wagmi/core';
 import { useWeb3Modal } from '@web3modal/wagmi/vue'
+import ConnectWallet from '@/components/ConnectWallet.vue'
 const { open, close } = useWeb3Modal()
 
 import { useAuthStore } from '@/store/auth'
 const authStore = useAuthStore()
+const showWallet = ref(false)
 
 const handleIncrece = (address) => {
     authStore.setAddress(address)
@@ -31,11 +20,31 @@ const handleConnectWallet = async () => {
     
 }
 
+const handleToggleWallet = () => {
+    showWallet.value = !showWallet.value
+}
+
 onMounted(() => {
     console.log('result:', getAccount())
 })
 
 </script>
+
+<template>
+    <header class="sticky top-0 w-full flex items-center px-[0.8rem] md:px-[5.12rem] gap-x-[1.44rem]">
+        <Logo class="logo block w-[3.4rem]"/>
+        <router-link to="/">Home</router-link>
+        <router-link to="/market">Marketplace</router-link>
+        <router-link to="/">Dashboard</router-link>
+        <router-link to="/">Docs</router-link>
+        <div class="flex items-center gap-x-4 ml-auto">
+            <w3m-button :balance="'hide'"/>
+            <a-button @click="handleToggleWallet">弹窗</a-button>
+        </div>
+
+        <ConnectWallet v-model="showWallet" />
+    </header>
+</template>
 
 <style scoped lang="less">
 header {

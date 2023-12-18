@@ -33,6 +33,16 @@ let routes = [
           deepth: 0.1 // 定义路由的层级
         }
       },
+      {
+        path: '/market/detail/:id?',
+        component: () => import("@/views/detail/detail.vue"),
+        name: 'Detail',
+        meta: {
+          loginRequired: false,
+          keepAlive: true, // 需要缓存
+          deepth: 0.1 // 定义路由的层级
+        }
+      },
     ],
   },
   { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/' },
