@@ -3,7 +3,8 @@
     <div class="banner md:h-[16rem] bg-cover md:bg-contain">
         <div class="inner md:w-[28rem]">
             <div class="discription py-10 md:py-0">
-                <h1 data-aos="fade-up" data-aos-once="true">Your Fractional Real Estate Platform</h1>
+                <h1 data-aos="fade-up" data-aos-once="true">Your Fractional</h1>
+                <h1 data-aos="fade-up" data-aos-once="true">Real Estate Platform</h1>
                 <p data-aos="fade-up" data-aos-once="true">Get started with just £50 to invest in UK student housing and receive a stable rental income!</p>
                 <button data-aos="fade-up" data-aos-once="true" class="launch">Launch APP <icon-arrow-right /></button>
             </div>
@@ -200,7 +201,8 @@ onMounted(() => {
             width: 740px;
             h1 {
                 font-size: 76px;
-                line-height: 1;
+                line-height: 1.2;
+                margin: 0;
             }
             > p {
                 font-size: 24px;
