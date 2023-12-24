@@ -44,8 +44,6 @@ const MESS = new URL('@/assets/images/icon-message.png', import.meta.url).href
 const router = useRoute()
 const isLight = ref(false)
 
-console.log('router>>', router)
-
 watchEffect(() => {
   if (router.path === '/') {
     isLight.value = false
@@ -60,7 +58,7 @@ watchEffect(() => {
 footer {
     background-color: var(--footer-bg);
     &.light {
-        --footer-bg: white;
+        --footer-bg: #FAFAFA;
         --footer-text: black;
         --footer-input: #EFF0F5;
     }

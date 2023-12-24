@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { str2Obj, MD5SHA512 } from '@/utils'
+import { useAuthStore } from '@/store'
 
 // create an axios instance
 const service = axios.create({
@@ -8,9 +10,27 @@ const service = axios.create({
 
 export function setupAxios() {
 
+  const authStore = useAuthStore()
+
   // request interceptor
   service.interceptors.request.use(
     config => {
+      
+      let timestamp = new Date().getTime();
+      let transformData;
+      config.headers['token'] = authStore.token || ''
+      config.headers["ts"] = timestamp;
+
+      if (config.method == 'get') {
+        transformData = { ...config.params }
+      } else {
+        let dataObj = str2Obj(config.data);
+        transformData = { ...dataObj }
+      }
+      
+      transformData.ts = timestamp
+      config.headers["sign"] = MD5SHA512(transformData);
+
       return config
     },
     error => {

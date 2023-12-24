@@ -59,7 +59,7 @@ export default defineConfig({
     proxy: {
       '/localapi': {
         // target: "http://192.168.3.49:9999",
-        target: "http://vocosmos-dev.fancynote.vip/v1",
+        target: "https://dev-api.dormy.ai",
         // target: "https://www.vega.fan/v1/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/localapi/, '')

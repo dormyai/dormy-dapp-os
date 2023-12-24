@@ -20,24 +20,24 @@
             <a-tag color="orangered">IN 21h: 14m: 30s</a-tag><a-tag color="gray">SOLD OUT</a-tag><a-tag color="purple">IN SALE</a-tag>
             <!-- 标题 -->
             <div class="flex items-center mt-1">
-                <h2 class="title">Summerlee Avenue, East Finchley, N2</h2>
+                <h2 class="title">{{ item.property_info.address1 }}, {{ item.property_info.address2 }}, {{ item.property_info.postcode }}</h2>
                 <span class="title-tips ml-auto">Stock: 1500</span>
             </div>
             <div class="price bg-[#F6F6F6] grid grid-cols-2">
                 <div>
                     <h1>Total Price</h1>
-                    <h2><strong>$300,000</strong> ≈ £240,000</h2>
+                    <h2><strong>${{ item.property_info.total_investment_value }}</strong> ≈ £240,000</h2>
                 </div>
                 <div>
-                    <h1>Total Price</h1>
-                    <h2><strong>$300,000</strong> ≈ £240,000</h2>
+                    <h1>Sqft Price</h1>
+                    <h2><strong>${{ item.property_chain_info.token_price }}</strong> ≈ £240,000</h2>
                 </div>
             </div>
             <div class="info flex items-center mt-1">
                 <div class="icon i-solar-calendar-outline"></div>
-                <p>Projected Annual Return：15.1%</p>
+                <p>Projected Annual Return：{{ item.property_info.projected_annual_return }}%</p>
                 <div class="icon i-solar-wallet-outline ml-auto"></div>
-                <p>Projected Rental Yield：10.2%</p>
+                <p>Projected Rental Yield：{{ item.property_info.projected_rental_yield }}%</p>
             </div>
             <a-button class="mt-2" type="primary" long shape="round">View Property</a-button>
         </div>
@@ -52,7 +52,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const props = defineProps({
-
+    item: {
+        type: Object,
+        require: true,
+    }
 })
 
 const imgList = ref([
@@ -63,7 +66,7 @@ const imgList = ref([
 const currentSwipper = ref(0)
 
 const onSwiper = (swiper) => {
-    console.log(swiper);
+    // console.log(swiper);
 }
 const onSlideChange = (e) => {
     currentSwipper.value = e.activeIndex

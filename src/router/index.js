@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import { getToken } from '@/utils';
+import { useAuthStore } from '@/store'
 import User from './modules/user'
 
 // 路由信息
@@ -43,6 +44,16 @@ let routes = [
           deepth: 0.1 // 定义路由的层级
         }
       },
+      {
+        path: '/dashboard',
+        component: () => import("@/views/dashboard/dashboard.vue"),
+        name: 'Dashboard',
+        meta: {
+          loginRequired: false,
+          keepAlive: true, // 需要缓存
+          deepth: 0.1 // 定义路由的层级
+        }
+      },
     ],
   },
   { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/' },
@@ -60,5 +71,22 @@ export async function setupRouter(app) {
   app.use(router)
   await router.isReady()
 }
+
+router.beforeEach((to, from, next) => {
+  
+  // 如果有 token
+  if (getToken()) {
+
+    const authStore = useAuthStore()
+    if (!authStore.user) { // 有 token ，没有用户信息，则请求用户信息
+      authStore.userLoginInfo()
+    }
+
+    next()
+
+  } else {
+    next()
+  }
+})
 
 export default router;

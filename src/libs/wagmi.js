@@ -5,6 +5,7 @@ import { configureChains, createConfig } from '@wagmi/core'
 import { mainnet } from 'viem/chains'
 import { publicProvider } from '@wagmi/core/providers/public'
 import { InjectedConnector } from '@wagmi/core'
+import { CoinbaseWalletConnector } from '@wagmi/core/connectors/coinbaseWallet'
 import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect'
 
 // 1. Define constants
@@ -17,8 +18,8 @@ const { chains, publicClient } = configureChains(
 )
 
 const metadata = {
-    name: 'Web3Modal',
-    description: 'Web3Modal Example',
+    name: 'DormyAI',
+    description: 'DormyAI',
     url: 'https://web3modal.com',
     icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
@@ -29,6 +30,7 @@ const wagmiConfig = createConfig({
         new WalletConnectConnector({ chains, options: { projectId, showQrModal: false, metadata } }),
         new EIP6963Connector({ chains }),
         new InjectedConnector({ chains, options: { shimDisconnect: true } }),
+        new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } })
     ],
     publicClient
 })
