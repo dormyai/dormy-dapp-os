@@ -183,7 +183,7 @@ const handleIncrece = () => {
 }
 
 const handlePostTwitter = () => {
-    let text = `I am already prepared to explore the new era of RWAFi.\n @Dormydotai is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating. Discover more at\n`
+    let text = `I am already prepared to explore the new era of RWAFi.%0a%0a@Dormydotai is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating.%0a%0aDiscover more at`
     let url = encodeURIComponent(`https://Dormy.ai\r`)
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`)
 }
