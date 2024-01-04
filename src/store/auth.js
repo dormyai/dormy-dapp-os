@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getToken, setToken, removeToken } from '@/utils'
 import { userLogin, loginUserInfo } from '@/api'
-import { disconnect } from '@wagmi/core';
+import { disconnect, getNetwork } from '@wagmi/core';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({ 
@@ -9,12 +9,14 @@ export const useAuthStore = defineStore('auth', {
         _sign: null,
         _token: getToken() || '',
         _user: null,
+        _network: null,
     }),
     getters: {
         address: state => state._address,
         token: state => state._token,
         sign: state => state._sign,
         user: state => state._user,
+        network: state => state._network
     },
     actions: {
         setAddress(a) {
@@ -25,6 +27,10 @@ export const useAuthStore = defineStore('auth', {
         },
         setToken(t) {
             this._token = t
+        },
+        getCurNetwork() {
+            this._network = getNetwork()
+            console.log('::>', this._network)
         },
         userLoginToken() {
             return new Promise((resolve, reject) => {

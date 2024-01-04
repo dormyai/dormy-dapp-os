@@ -2,8 +2,9 @@ import { createWeb3Modal } from '@web3modal/wagmi/vue'
 import { walletConnectProvider, EIP6963Connector } from '@web3modal/wagmi'
 
 import { configureChains, createConfig } from '@wagmi/core'
-import { mainnet } from 'viem/chains'
+import { mainnet, polygonMumbai, optimism } from 'viem/chains'
 import { publicProvider } from '@wagmi/core/providers/public'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { InjectedConnector } from '@wagmi/core'
 import { CoinbaseWalletConnector } from '@wagmi/core/connectors/coinbaseWallet'
 import { WalletConnectConnector } from '@wagmi/core/connectors/walletConnect'
@@ -13,8 +14,16 @@ const projectId = '0a3bd06ad2697a71e4662e217f1a4189'
 
 // 2. Configure wagmi client
 const { chains, publicClient } = configureChains(
-    [mainnet],
-    [walletConnectProvider({ projectId }), publicProvider()]
+    [polygonMumbai],
+    [
+        // walletConnectProvider({ projectId }), 
+        // publicProvider(),
+        jsonRpcProvider({
+            rpc: (chain) => ({
+                http: `https://polygon-mumbai-pokt.nodies.app`,
+            }),
+        }),
+    ]
 )
 
 const metadata = {

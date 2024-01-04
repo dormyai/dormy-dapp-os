@@ -11,3 +11,14 @@ export function propertyList(params = {}) {
         params,
     });
 }
+
+export function propertyDetail(data = {}) {
+    return axios({
+        url: "/api/v1/property/detail",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "get",
+        data: qs.stringify(data),
+    });
+}

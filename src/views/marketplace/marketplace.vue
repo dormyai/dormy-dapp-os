@@ -3,10 +3,18 @@ import { ref, reactive, watchEffect, onMounted } from 'vue';
 import { propertyList } from '@/api';
 import MarketItem from './components/marketitem.vue';
 
+const loading = ref(false)
 const queryParams = reactive({ pn: 1, ps: 10 })
 const list = ref([])
 
 onMounted(() => {
+    getData()
+})
+
+const getData = () => {
+    if (loading.value) return;
+
+    loading.value = true
     propertyList({
         pn: queryParams.pn,
         ps: queryParams.ps
@@ -17,8 +25,9 @@ onMounted(() => {
             }
             // TODO: 翻页
         }
+        loading.value = false
     })
-})
+}
 
 </script>
 
@@ -29,6 +38,10 @@ onMounted(() => {
             <p class="des">Invest in UK student housing and receive a stable rental income!</p>
             <div class="list">
                 <MarketItem v-for="item in list" :key="item.property_info.id" :item="item" class="mt-3" />
+
+                <div v-if="loading" class="py-12 text-center">
+                    <Loading :size="26" />
+                </div>
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useAuthStore } from '@/store/auth'
-import { getAccount, signMessage, disconnect } from '@wagmi/core';
+import { getAccount, signMessage, disconnect, getNetwork } from '@wagmi/core';
 import { useWeb3Modal, useWeb3ModalState, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { signMsg } from '@/api'
 import { IconUser } from '@arco-design/web-vue/es/icon';
@@ -44,8 +44,11 @@ watch(() => state.open, async (val) => {
     }
 })
 
-onMounted(() => {
-    // console.log('result:', getAccount())
+onMounted(async () => {
+    // authStore.getCurNetwork()
+    // await authStore.getCurNetwork()
+    authStore.getCurNetwork()
+    // console.log('account:::', account)
     
 })
 
@@ -74,7 +77,7 @@ const handleLogout = () => {
         <router-link to="/dashboard">Dashboard</router-link>
         <router-link to="/">Docs</router-link>
         <div class="flex items-center gap-x-2 ml-auto">
-            <a-button type="outline" shape="round" @click="handleChangeNetwork">Network</a-button>
+            <a-button type="outline" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
 
             <a-dropdown trigger="hover" v-if="authStore.user">
                 <a-button type="primary" shape="round">{{ authStore.user.name }}</a-button>

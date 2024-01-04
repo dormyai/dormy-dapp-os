@@ -16,12 +16,28 @@
             </div>
         </swiper>
         <div class="market-main flex-1">
-            <!-- 状态 -->
-            <a-tag color="orangered">IN 21h: 14m: 30s</a-tag><a-tag color="gray">SOLD OUT</a-tag><a-tag color="purple">IN SALE</a-tag>
+            <!-- 状态: 
+                0 New // 新建状态，尚未开始或初始化 Upcoming 
+                1 Upcoming // 即将到来，通常用于预售之前
+                2 Active // 活动状态，可以进行交易或购买
+                3 SoldOut // 已售罄，不再可购买
+                4 Disabled // 已禁用或停用，无法进行交易或购买
+            -->
+            <template v-if="statusCon">
+                <a-tag v-if="statusCon.propertyStatus == 0" color="blue">NEW</a-tag>
+                <a-tag v-else-if="statusCon.propertyStatus == 1" color="orangered">IN 21h: 14m: 30s</a-tag>
+                <a-tag v-else-if="statusCon.propertyStatus == 2" color="purple">IN SALE</a-tag>
+                <a-tag v-else-if="statusCon.propertyStatus == 3" color="gray">SOLD OUT</a-tag>
+                <a-tag v-else-if="statusCon.propertyStatus == 4" color="gray">DISABLED</a-tag>
+                <a-tag v-else color="gray">ERROR</a-tag>
+            </template>
+            <template v-else>
+                <Loading />
+            </template>
             <!-- 标题 -->
             <div class="flex items-center mt-1">
                 <h2 class="title">{{ item.property_info.address1 }}, {{ item.property_info.address2 }}, {{ item.property_info.postcode }}</h2>
-                <span class="title-tips ml-auto">Stock: 1500</span>
+                <span class="title-tips ml-auto">Stock: <span v-if="mentCon">{{ calculateStock }}</span> <span v-else> <Loading /></span> </span>
             </div>
             <div class="price bg-[#F6F6F6] grid grid-cols-2">
                 <div>
@@ -39,7 +55,7 @@
                 <div class="icon i-solar-wallet-outline ml-auto"></div>
                 <p>Projected Rental Yield：{{ item.property_info.projected_rental_yield }}%</p>
             </div>
-            <a-button class="mt-2" type="primary" long shape="round">View Property</a-button>
+            <a-button class="mt-2" type="primary" long shape="round" @click="handleGotoDetail">View Property</a-button>
         </div>
     </div>
 </template>
@@ -47,26 +63,61 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
-import { defineProps, ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from "vue-router";
+import { propertyAddress, propertyAbi } from '@/abi'
+import { readContract } from '@wagmi/core'
+import Loading from '@/components/Loading.vue'
+import Big from 'big.js';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+const router = useRouter()
 const props = defineProps({
     item: {
         type: Object,
         require: true,
     }
 })
+const statusCon = ref(null)
+const mentCon = ref(null)
 
 const imgList = ref([
     'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
     'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
     'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
 ])
-const currentSwipper = ref(0)
 
+const currentSwipper = ref(0)
 const onSwiper = (swiper) => {
     // console.log(swiper);
+}
+const calculateStock = computed(() => {
+    if (!mentCon.value) return null
+    return new Big(mentCon.value.tokenAmount).minus(mentCon.value.soldQuantity)
+})
+
+onMounted(async () => {
+    
+    const status = await readContract({
+        address: propertyAddress,
+        abi: propertyAbi,
+        functionName: 'getPropertyInfo',
+        args: [props.item.property_info.property_number]
+    })
+    statusCon.value = status
+    const ment = await readContract({
+        address: propertyAddress,
+        abi: propertyAbi,
+        functionName: 'getPropertyInvestmentValue',
+        args: [props.item.property_info.property_number]
+    })
+    mentCon.value = ment
+
+})
+
+const handleGotoDetail = () => {
+    router.push(`/market/detail/` + props.item.property_info.property_number)
 }
 const onSlideChange = (e) => {
     currentSwipper.value = e.activeIndex
