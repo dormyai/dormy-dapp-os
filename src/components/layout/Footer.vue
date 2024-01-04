@@ -15,7 +15,7 @@
             <div class="right mt-4 md:mt-0 md:ml-auto flex flex-col items-center">
                 <h3 class="font-bold text-[0.51rem]">Join our Community</h3>
                 <div class="flex items-center gap-x-[0.6rem] my-3">
-                    <a href="https://discord.gg/Rcmgth4a" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="DISCORD" alt=""></a>
+                    <!-- <a href="https://discord.gg/Rcmgth4a" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="DISCORD" alt=""></a> -->
                     <a href="https://twitter.com/Dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTER" alt=""></a>
                     <a href="https://medium.com/@dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MD" alt=""></a>
                 </div>

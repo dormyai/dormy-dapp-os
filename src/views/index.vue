@@ -6,7 +6,7 @@
                 <h1 data-aos="fade-up" data-aos-once="true">Your Fractional</h1>
                 <h1 data-aos="fade-up" data-aos-once="true">Real Estate Platform</h1>
                 <p data-aos="fade-up" data-aos-once="true">Get started with just £50 to invest in UK student housing and receive a stable rental income!</p>
-                <button data-aos="fade-up" data-aos-once="true" class="launch">Launch APP <icon-arrow-right /></button>
+                <button @click="handlePostTwitter" data-aos="fade-up" data-aos-once="true" class="launch">Get Ready <icon-arrow-right /></button>
             </div>
         </div>
     </div>
@@ -124,10 +124,11 @@
 
 <script setup>
 import { useAuthStore } from '@/store/auth'
+import { useRoute } from 'vue-router'
 import { ref, onMounted, reactive } from 'vue';
 import { IconClose, IconArrowRight } from '@arco-design/web-vue/es/icon';
 import AOS from "aos";
-
+const router = useRoute()
 const Banner = new URL('@/assets/images/bg-banner.png', import.meta.url).href
 const ICON01 = new URL('@/assets/images/icon-secure.png', import.meta.url).href
 const ICON02 = new URL('@/assets/images/icon-transfer.png', import.meta.url).href
@@ -179,6 +180,12 @@ const customStyle = ref({
 const store = useAuthStore()
 const handleIncrece = () => {
     store.increment()
+}
+
+const handlePostTwitter = () => {
+    let text = `I am already prepared to explore the new era of RWAFi.\n @Dormydotai is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating. Discover more at`
+    let url = encodeURIComponent(`https://Dormy.ai\r`)
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`)
 }
 
 // onMounted
