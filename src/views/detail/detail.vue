@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router';
 import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent } from '@wagmi/core'
 import { propertyAddress, propertyAbi, usdtAddress, dormyAddress, dormyAbi } from '@/abi'
 import { IconQuestionCircle } from '@arco-design/web-vue/es/icon';
-import { formatEther, getAddress } from 'viem'
+import { formatEther, getAddress, parseUnits } from 'viem'
 import { useAuthStore } from '@/store/auth'
 import Loading from '@/components/Loading.vue'
 import Big from 'big.js';
@@ -19,6 +19,7 @@ const store = useAuthStore()
 
 const router = useRoute()
 const detailContent = ref(null)
+const detailChaniContent = ref(null)
 const detailMedia = ref([])
 const mentCon = ref(null)
 
@@ -71,7 +72,8 @@ const calculatePercent = computed(() => {
     return Number(sold.div(tokenAmount).toString())
 })
 const youPay = computed(() => {
-    return youBuy.value * tokenPrice.value
+    let result  = youBuy.value * tokenPrice.value
+    return result
 })
 const mintDisabled = computed(() => {
 
@@ -106,14 +108,14 @@ const handleMintOp = async () => {
     let account = await getAccount()
     let checkAllow = await checkApproval(account.address)
 
-    // if (checkAllow == 0) { // 未授权，先去授权
-    //     let result = await approveTokens()
-    //     if (result.hash) { // 授权完成，去mint
-    //         handleMint(account.address)
-    //     }
-    // } else {
-    //     handleMint(account.address)
-    // }
+    if (checkAllow == 0) { // 未授权，先去授权
+        let result = await approveTokens()
+        if (result.hash) { // 授权完成，去mint
+            handleMint(account.address)
+        }
+    } else {
+        handleMint(account.address)
+    }
     console.log('checkAllow::', checkAllow)
 }
 
@@ -132,7 +134,7 @@ const approveTokens = async (address) => {
         address: usdtAddress,
         abi: erc20ABI,
         functionName: 'approve',
-        args: [usdtAddress, youPay.value],
+        args: [dormyAddress, parseUnits((youPay.value).toString(), 18)],
         account: address
     })
     return approve
@@ -153,7 +155,7 @@ const handleMint = async (address) => {
                 gasLimit: 300000,
                 from: address
             },
-            chainId: store.network.chain.id,
+            // chainId: store.network.chain.id,
             account: address
         })
     } catch (err) {
@@ -170,6 +172,7 @@ const handleMint = async (address) => {
 
     try {
         const result = await writeContract(config)
+        console.log('result::::', result)
         result.wait().then((receipt) => {
             if(receipt.status == 0) { // 交易失败
                 console.log('mint 失败>>>>>>>')
@@ -191,6 +194,7 @@ const getDetailContent = () => {
         if (res.code == 200) {
             detailContent.value = res.data.property_info
             detailMedia.value = res.data.property_info_medium
+            detailChaniContent.value = res.data.property_chain_info
         }
     })
 }
@@ -236,24 +240,24 @@ const calculatePrice = (bigVal) => {
                     <h2 class="c-h">About the Property</h2>
                     <section class="section-block">
                         <h2 class="c-h3">Property Description</h2>
-                        <p>Situated in this popular tree lined residential turning off Fortis Green and conveniently located within walking distance to local shops, amenities and East Finchley tube station is this recently refurbished and extended four bedroom, two bathroom (one ensuite) end of terraced house. The property is offered chain free and benefits from an approximately 24ft modern kitchen diner with bi folding doors leading to garden, a guest cloakroom, double glazing and a 21ft master bedroom with Juliet Balcony. To really appreciate the size, location and potential an internal viewing is highly recommended via vendors main agents Adam Hayes Estate Agents.</p>
+                        <p>{{ detailContent.property_description }}</p>
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">Property Management and Insurance</h2>
-                        <p>· Managed by Ernest &Manson Property Management</p>
-                        <p>· Insurace Policy from Avaya</p>
+                        <p>{{ detailContent.property_insurance }}</p>
+                        <!-- <p>· Managed by Ernest &Manson Property Management</p> -->
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">Tenancy</h2>
-                        <p>· One year tenancy of Room A       (1 Dec, 2023 - 30, Nov, 2024)</p>
-                        <p>· Two year tenancy of Room B       (1 Dec, 2023 - 30, Nov, 2025)</p>
+                        <p>{{ detailContent.tenancy }}</p>
+                        <!-- <p>· One year tenancy of Room A       (1 Dec, 2023 - 30, Nov, 2024)</p>
+                        <p>· Two year tenancy of Room B       (1 Dec, 2023 - 30, Nov, 2025)</p> -->
                     </section>
                     <div class="divide"></div>
                     <section class="section-block">
                         <h2 class="c-h3">Neighbourhood</h2>
-                        <p class="flex items-center justify-between"><span>· University College of London (UCL)</span> <span class="gray">1 miles</span></p>
-                        <p class="flex items-center justify-between"><span>· London School of Economics and Political Science  (LSE)</span> <span class="gray">1 miles</span></p>
-                        <p class="flex items-center justify-between"><span>· King’s College London (KCL)</span> <span class="gray">1 miles</span></p>
+                        <p>{{ detailContent.neighbourhood }}</p>
+                        <!-- <p class="flex items-center justify-between"><span>· University College of London (UCL)</span> <span class="gray">1 miles</span></p> -->
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">On the Map</h2>
@@ -265,29 +269,33 @@ const calculatePrice = (bigVal) => {
                     <h2 class="c-h">Financial</h2>
                     <section class="section-block">
                         <h2 class="c-h3">Initial Token Offering (ITO)</h2>
-                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Total Investment Value</span><span>$307,300</span></h2>
+                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Total Investment Value</span><span>${{ detailContent.total_investment_value }}</span></h2>
                         <div class="pl-1">
-                            <p class="flex items-center justify-between gray"><span>· University College of London (UCL)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· London School of Economics and Political Science  (LSE)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· King’s College London (KCL)</span> <span>1 miles</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Underlying Asset Price</span> <span>${{ detailContent.underlying_asset_price }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Closing costs(i.e. Stamp duty, Agency fee, Conveyancing, Surveys)</span> <span>${{ detailContent.closing_costs }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Upfront SPV Fees</span> <span>${{ detailContent.upfront_spv_fees }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Operating Reserve (5%)</span> <span>${{ detailContent.operating_reserve }}</span></p>
                         </div>
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">Rents</h2>
-                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Annual Gross Rents</span><span>$30,300</span></h2>
+                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Annual Gross Rents</span><span>${{ detailContent.annual_gross_rents }}</span></h2>
                         <div class="pl-1">
-                            <p class="flex items-center justify-between gray"><span>· University College of London (UCL)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· London School of Economics and Political Science  (LSE)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· King’s College London (KCL)</span> <span>1 miles</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Council Tax</span> <span>${{ detailContent.council_tax }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Homeowners Insurance </span> <span>${{ detailContent.homeowners_insurance }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Property Management</span> <span>${{ detailContent.property_management_fees }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Utilities </span> <span>${{ detailContent.utilities }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Legal Fees (i.e. Annual SPV Admin & filing fees) </span> <span>${{ detailContent.legal_fees }}</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Annual Cashflow</span> <span>${{ detailContent.annual_cashflow }}</span></p>
                         </div>
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">Total Returns</h2>
-                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Projected Annual Return </span><span>$30,300</span></h2>
+                        <h2 class="c-h4 mt-1 flex items-center justify-between"><span>· Projected Annual Return </span><span>{{ detailContent.projected_annual_return }}%</span></h2>
                         <div class="pl-1">
-                            <p class="flex items-center justify-between gray"><span>· University College of London (UCL)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· London School of Economics and Political Science  (LSE)</span> <span>1 miles</span></p>
-                            <p class="flex items-center justify-between gray"><span>· King’s College London (KCL)</span> <span>1 miles</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Projected Rental Yield</span> <span>{{ detailContent.projected_rental_yield }}%</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Projected Appreciation</span> <span>{{ detailContent.projected_appreciation }}%</span></p>
+                            <p class="flex items-center justify-between gray"><span>· Historical Rental Yield</span> <span>{{ detailContent.historical_rental_yield }}%</span></p>
                         </div>
                     </section>
                     <p class="tips mt-[0.8rem]">*Conversions were made based on the exchange rate of GBP and USD</p>
@@ -297,14 +305,11 @@ const calculatePrice = (bigVal) => {
                     <h2 class="c-h">Information Disclosure</h2>
                     <section class="section-block">
                         <h2 class="c-h2">On-Chain Info</h2>
-                        <p class="flex items-center justify-between"><span>DSFT-1 Contract</span> <a href="">0x4e71A2E537B7f9D9413D3991D37958c0b5e1e503</a></p>
-                        <p class="flex items-center justify-between"><span>DSFT-1 Contract</span> <a href="">0x4e71A2E537B7f9D9413D3991D37958c0b5e1e503</a></p>
+                        <p class="flex items-center justify-between"><span>DSFT-1 Contract</span> <a :href="'https://mumbai.polygonscan.com/address/' + detailChaniContent.property_contract_addr ">{{ detailChaniContent.property_contract_addr }}</a></p>
+                        <p class="flex items-center justify-between"><span>Activities & Log</span> <a href="">{{ detailChaniContent.property_contract_addr }}</a></p>
                     </section>
                     <section class="section-block">
                         <h2 class="c-h2">On-Chain Info </h2>
-                        <p>· <a href="">Inspection Report</a></p>
-                        <p>· <a href="">Inspection Report</a></p>
-                        <p>· <a href="">Inspection Report</a></p>
                         <p>· <a href="">Inspection Report</a></p>
                     </section>
                 </section>
@@ -496,6 +501,10 @@ const calculatePrice = (bigVal) => {
             
             .section-block {
                 margin-top: 26px;
+                white-space: pre-line;
+                > p {
+                    line-height: 1.6;
+                }
             }
             
         }
