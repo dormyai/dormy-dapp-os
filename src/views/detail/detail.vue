@@ -213,8 +213,8 @@ const calculatePrice = (bigVal) => {
 </script>
 
 <template>
-    <div class="back pt-2 cursor-pointer px-[0.8rem] md:px-[5.12rem] flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
-    <div class="detail-container px-[0.8rem] md:px-[5.12rem] flex items-start">
+    <div class="back pt-2 cursor-pointer md:w-[28rem] mx-auto flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
+    <div class="detail-container md:w-[28rem] mx-auto flex items-start">
         <main class="main">
             <img class="preview-image" src="https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640" alt="">
             <div class="swiper-wrapper">

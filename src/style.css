@@ -6,6 +6,8 @@
   --footer-bg: #091823;
   --footer-text: white;
   --footer-input: white;
+
+  --inner-width: 1200px;
 }
 
 html {

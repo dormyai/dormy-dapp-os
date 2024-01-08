@@ -4,29 +4,31 @@ import { ref } from 'vue';
 </script>
 
 <template>
-    <div class="dashboard-container px-[0.8rem] md:px-[5.12rem]">
+    <div class="dashboard-container">
 
-        <h1 class="m-h1">Dashboard</h1>
-
-        <h3 class="m-h3">Overview</h3>
-        <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-2 mt-1">
-            <div class="overview">
-                <p class="text-[#525767]">Total Investment</p>
-                <h1 class="price">$2,420</h1>
-                <div class="flex items-center gap-1">
-                    <p class="text-[#6D6F80]">Appreciation</p>
-                    <span class="text-[#16C784]">+$200</span>
-                    <a-tag class="ml-auto" color="#16C784">+10%</a-tag>
+        <div class="inner md:w-[28rem] mx-auto">
+            <h1 class="m-h1">Dashboard</h1>
+    
+            <h3 class="m-h3">Overview</h3>
+            <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-2 mt-1">
+                <div class="overview">
+                    <p class="text-[#525767]">Total Investment</p>
+                    <h1 class="price">$2,420</h1>
+                    <div class="flex items-center gap-1">
+                        <p class="text-[#6D6F80]">Appreciation</p>
+                        <span class="text-[#16C784]">+$200</span>
+                        <a-tag class="ml-auto" color="#16C784">+10%</a-tag>
+                    </div>
                 </div>
-            </div>
-            <div class="overview">
-                <p class="text-[#755A4C]">Total Investment</p>
-            </div>
-            <div class="overview">
-                <p class="text-[#443872]">Total Investment</p>
-            </div>
-            <div class="overview">
-                <p class="text-[#285F5F]">Total Investment</p>
+                <div class="overview">
+                    <p class="text-[#755A4C]">Total Investment</p>
+                </div>
+                <div class="overview">
+                    <p class="text-[#443872]">Total Investment</p>
+                </div>
+                <div class="overview">
+                    <p class="text-[#285F5F]">Total Investment</p>
+                </div>
             </div>
         </div>
 

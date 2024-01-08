@@ -33,7 +33,7 @@ const getData = () => {
 
 <template>
     <div class="market-container">
-        <div class="px-[0.8rem] md:px-[5.12rem] pb-4">
+        <div class="inner md:w-[28rem] mx-auto pb-4">
             <h1 class="title">Listing Properties</h1>
             <p class="des">Invest in UK student housing and receive a stable rental income!</p>
             <div class="list">

@@ -70,27 +70,29 @@ const handleLogout = () => {
 </script>
 
 <template>
-    <header class="sticky top-0 w-full flex items-center px-[0.8rem] md:px-[5.12rem] gap-x-[1.44rem]">
-        <Logo class="logo block w-[3.4rem]"/>
-        <router-link to="/">Home</router-link>
-        <router-link to="/market">Marketplace</router-link>
-        <router-link to="/dashboard">Dashboard</router-link>
-        <router-link to="/">Docs</router-link>
-        <div class="flex items-center gap-x-2 ml-auto">
-            <a-button type="outline" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
-
-            <a-dropdown trigger="hover" v-if="authStore.user">
-                <a-button type="primary" shape="round">{{ authStore.user.name }}</a-button>
-                <template #content>
-                    <a-doption class="flex items-center">
-                        <a-avatar :size="28" :style="{ backgroundColor: '#F7A2CA' }"><IconUser /></a-avatar>
-                        <span class="ml-1">{{ authStore.user.name }}</span>
-                    </a-doption>
-                    <a-doption>Verification: Successful</a-doption>
-                    <a-doption @click="handleLogout">Logout</a-doption>
-                </template>
-            </a-dropdown>
-            <a-button v-if="!authStore.user" :loading="loginLoading" type="primary" shape="round" @click="handleConncetWallet">Connect Wallet</a-button>
+    <header class="sticky top-0 w-full">
+        <div class="inner md:w-[28rem] mx-auto flex items-center gap-x-[1.44rem]">
+            <Logo class="logo block w-[3.4rem]"/>
+            <router-link to="/">Home</router-link>
+            <router-link to="/market">Marketplace</router-link>
+            <router-link to="/dashboard">Dashboard</router-link>
+            <router-link to="/">Docs</router-link>
+            <div class="flex items-center gap-x-2 ml-auto">
+                <a-button type="outline" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
+    
+                <a-dropdown trigger="hover" v-if="authStore.user">
+                    <a-button type="primary" shape="round">{{ authStore.user.name }}</a-button>
+                    <template #content>
+                        <a-doption class="flex items-center">
+                            <a-avatar :size="28" :style="{ backgroundColor: '#F7A2CA' }"><IconUser /></a-avatar>
+                            <span class="ml-1">{{ authStore.user.name }}</span>
+                        </a-doption>
+                        <a-doption>Verification: Successful</a-doption>
+                        <a-doption @click="handleLogout">Logout</a-doption>
+                    </template>
+                </a-dropdown>
+                <a-button v-if="!authStore.user" :loading="loginLoading" type="primary" shape="round" @click="handleConncetWallet">Connect Wallet</a-button>
+            </div>
         </div>
     </header>
 </template>
@@ -98,10 +100,12 @@ const handleLogout = () => {
 <style scoped lang="less">
 header {
     box-sizing: border-box;
-    height: var(--header-height);
     background: white;
     z-index: 99;
     border-bottom: 1px solid #D5D5D5;
+    .inner {
+        height: var(--header-height);
+    }
     a {
         font-size: 22px;
         text-decoration: none;
