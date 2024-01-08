@@ -36,6 +36,12 @@ watchEffect(() => {
     }
 }, [authStore.address])
 
+const handlePostTwitter = () => {
+    let text = `I am already prepared to explore the new era of %23RWAFi.%0a%0a@DormyAI is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating!%0a%0aDiscover more at`
+    let url = encodeURIComponent(`https://Dormy.ai\r`)
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}&hashtags=RWA,100xGems`)
+}
+
 // w3m 的弹窗
 watch(() => state.open, async (val) => {
     if(!val && !authStore.token) {
