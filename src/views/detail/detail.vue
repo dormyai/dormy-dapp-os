@@ -199,6 +199,10 @@ const getDetailContent = () => {
     })
 }
 
+const onSlideChange = (e) => {
+    currentSwipper.value = e.activeIndex
+}
+
 const handleMaxBuy = () => {
     let buyMaxPurchase = maxPurchase.value // 合约允许最个数
     let BalancePurchase = Math.floor(balance.value / tokenPrice.value) // 账户余额能买到的最个数
@@ -226,7 +230,7 @@ const calculatePrice = (bigVal) => {
                 :modules="[Navigation]"
                 class="my-swiper"
                 >
-                    <swiper-slide v-for="item,index in 7" class="swiper-slide"><img class="thumbnail" src="https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640" alt=""></swiper-slide>
+                    <swiper-slide v-for="item,index in detailMedia" :key="index" class="swiper-slide"><img class="thumbnail" :src="item.url" alt=""></swiper-slide>
                 </swiper>
             </div>
 

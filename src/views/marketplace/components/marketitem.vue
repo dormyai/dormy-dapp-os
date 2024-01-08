@@ -7,12 +7,12 @@
             @slideChange="onSlideChange"
             class="swiper-box"
         >
-            <swiper-slide v-for="item, index in imgList" :key="index">
-                <img class="select-none" :src="item" alt="">
+            <swiper-slide v-for="v, index in item.property_info_medium" :key="index">
+                <img class="select-none" :src="v.url" alt="">
             </swiper-slide>
             <div class="img-navigation flex-1">
                 <div class="icon i-solar-gallery-wide-bold"></div>
-                <span>{{ currentSwipper + 1 }} / {{ imgList.length }}</span>
+                <span>{{ currentSwipper + 1 }} / {{ item.property_info_medium.length }}</span>
             </div>
         </swiper>
         <div class="market-main flex-1">
@@ -81,12 +81,6 @@ const props = defineProps({
 })
 const statusCon = ref(null)
 const mentCon = ref(null)
-
-const imgList = ref([
-    'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
-    'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
-    'https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640',
-])
 
 const currentSwipper = ref(0)
 const onSwiper = (swiper) => {
