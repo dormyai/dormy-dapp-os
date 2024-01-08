@@ -6,7 +6,7 @@ import { propertyDetail } from '@/api';
 import { useRoute } from 'vue-router';
 import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent } from '@wagmi/core'
 import { propertyAddress, propertyAbi, usdtAddress, dormyAddress, dormyAbi } from '@/abi'
-import { IconQuestionCircle } from '@arco-design/web-vue/es/icon';
+import { IconQuestionCircle, IconExclamationCircle } from '@arco-design/web-vue/es/icon';
 import { formatEther, getAddress, parseUnits } from 'viem'
 import { useAuthStore } from '@/store/auth'
 import Loading from '@/components/Loading.vue'
@@ -22,6 +22,7 @@ const detailContent = ref(null)
 const detailChaniContent = ref(null)
 const detailMedia = ref([])
 const mentCon = ref(null)
+const currentSwipper = ref(0)
 
 const tokenName = ref(null)
 const tokenPrice = ref(null)
@@ -220,7 +221,7 @@ const calculatePrice = (bigVal) => {
     <div class="back pt-2 cursor-pointer md:w-[28rem] mx-auto flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
     <div class="detail-container md:w-[28rem] mx-auto flex items-start">
         <main class="main">
-            <img class="preview-image" src="https://i.seadn.io/gcs/files/98d9070784ef890a9ba5ab2d17bb185a.png?auto=format&dpr=1&w=640" alt="">
+            <img class="preview-image" :src="detailMedia[currentSwipper]?.url" alt="">
             <div class="swiper-wrapper">
                 <swiper
                 :slidesPerView="'auto'"
@@ -229,6 +230,7 @@ const calculatePrice = (bigVal) => {
                 :navigation="true"
                 :modules="[Navigation]"
                 class="my-swiper"
+                @slideChange="onSlideChange"
                 >
                     <swiper-slide v-for="item,index in detailMedia" :key="index" class="swiper-slide"><img class="thumbnail" :src="item.url" alt=""></swiper-slide>
                 </swiper>
@@ -239,6 +241,33 @@ const calculatePrice = (bigVal) => {
                     <h2 class="c-h2">{{ detailContent.address1 }}, {{ detailContent.address2 }}, {{ detailContent.county }}</h2>
                     <p>{{detailContent.county}}, {{ detailContent.country }}, {{ detailContent.postcode }}</p>
                 </section>
+                <div class="grid grid-cols-4 gap-1 text-[0.28rem] mt-1">
+                    <dl>
+                        <dt class="uppercase text-[#7B7B80]">property type</dt>
+                        <dd class="flex items-center text-[0.36rem] mt-[0.16rem]"><div class="i-solar-home-linear text-[0.4rem]"></div><div class="ml-[0.2rem]">{{ detailContent.property_type }}</div></dd>
+                    </dl>
+                    <dl>
+                        <dt class="uppercase text-[#7B7B80]">bedrooms</dt>
+                        <dd class="flex items-center text-[0.36rem] mt-[0.16rem]"><div class="i-solar-bed-outline text-[0.45rem]"></div><div class="ml-[0.2rem]">×{{ detailContent.bedrooms }}</div></dd>
+                    </dl>
+                    <dl>
+                        <dt class="uppercase text-[#7B7B80]">bathrooms</dt>
+                        <dd class="flex items-center text-[0.36rem] mt-[0.16rem]"><div class="i-solar-bath-outline text-[0.45rem]"></div><div class="ml-[0.2rem]">×{{ detailContent.bathrooms }}</div></dd>
+                    </dl>
+                    <dl>
+                        <dt class="uppercase text-[#7B7B80]">size</dt>
+                        <dd class="text-[0.36rem] mt-[0.16rem]">
+                            <div class="flex items-center">
+                                <div class="i-solar-ruler-angular-outline text-[0.4rem]"></div><div class="ml-[0.2rem]">{{ detailContent.internal_size }}sq.ft.</div>
+                            </div>
+                            <div class="text-[0.28rem] text-[#7B7B80] pl-3">({{ detailContent.council_tax }}sq.m.)</div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt class="uppercase text-[#7B7B80] flex items-center"><span>tenure</span><icon-exclamation-circle :size="12" class="cursor-pointer ml-[0.1rem]"/></dt>
+                        <dd class="text-[0.36rem] mt-[0.16rem]">Freehold</dd>
+                    </dl>
+                </div>
                 <div class="divide"></div>
                 <section class="details-main">
                     <h2 class="c-h">About the Property</h2>
@@ -394,7 +423,7 @@ const calculatePrice = (bigVal) => {
                         <div class="ml-auto i-cryptocurrency-color-usdt mx-1"></div>
                         <span>{{ symbol }}</span>
                     </div>
-                    <p class="tips">Projected Annual Return: xx</p>
+                    <p class="tips">Projected Annual Return: 0</p>
                 </div>
                 <div class="mt-4">
                     <a-button @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>

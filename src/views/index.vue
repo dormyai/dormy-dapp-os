@@ -1,6 +1,6 @@
 <template>
 
-    <div class="banner md:h-[16rem] bg-cover md:bg-contain">
+    <div class="banner md:h-[16rem]">
         <div class="inner md:w-[28rem]">
             <div class="discription py-10 md:py-0">
                 <h1 data-aos="fade-up" data-aos-once="true">Your Fractional</h1>
@@ -197,7 +197,7 @@ onMounted(() => {
 
 <style scoped lang="less">
 .banner {
-    background: url('../assets/images/bg-banner.png') no-repeat center bottom;
+    background: url('../assets/images/bg-banner.png') no-repeat center bottom / cover;
     display: flex;
     flex-direction: column;
     align-items: center;
