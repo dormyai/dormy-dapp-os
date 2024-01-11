@@ -8,6 +8,10 @@ const queryParams = reactive({ pn: 1, ps: 10 })
 const list = ref([])
 
 onMounted(() => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
     getData()
 })
 

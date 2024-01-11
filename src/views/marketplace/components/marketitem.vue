@@ -55,7 +55,7 @@
                 <div class="icon i-solar-wallet-outline ml-auto"></div>
                 <p>Projected Rental Yield：{{ item.property_info.projected_rental_yield }}%</p>
             </div>
-            <a-button class="mt-2" type="primary" long shape="round" @click="handleGotoDetail">View Property</a-button>
+            <a-button class="mt-2" type="primary" size="large" long shape="round" @click="handleGotoDetail">View Property</a-button>
         </div>
     </div>
 </template>

@@ -22,9 +22,11 @@ declare module 'vue' {
     ConnectWallet: typeof import('./src/components/ConnectWallet.vue')['default']
     Footer: typeof import('./src/components/layout/Footer.vue')['default']
     Header: typeof import('./src/components/layout/Header.vue')['default']
+    Image: typeof import('./src/components/Image.vue')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
     Logo: typeof import('./src/components/Logo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SolarGalleryRoundBold: typeof import('./src/components/SolarGalleryRoundBold.vue')['default']
   }
 }

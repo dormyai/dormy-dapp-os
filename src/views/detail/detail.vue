@@ -10,6 +10,7 @@ import { IconQuestionCircle, IconExclamationCircle } from '@arco-design/web-vue/
 import { formatEther, getAddress, parseUnits } from 'viem'
 import { useAuthStore } from '@/store/auth'
 import Loading from '@/components/Loading.vue'
+import Image from '@/components/Image.vue'
 import Big from 'big.js';
 import Decimal from 'decimal.js';
 import 'swiper/css';
@@ -221,7 +222,8 @@ const calculatePrice = (bigVal) => {
     <div class="back pt-2 cursor-pointer md:w-[28rem] mx-auto flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
     <div class="detail-container md:w-[28rem] mx-auto flex items-start">
         <main class="main">
-            <img class="preview-image" :src="detailMedia[currentSwipper]?.url" alt="">
+            <!-- detailMedia[currentSwipper]?.url -->
+            <Image class="preview-image" :src="null" />
             <div class="swiper-wrapper">
                 <swiper
                 :slidesPerView="'auto'"
