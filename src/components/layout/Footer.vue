@@ -7,8 +7,8 @@
                 <div class="bg-white flex items-center rounded-full input-box">
                     <img class="w-[0.46rem]" :src="MESS" alt="">
                     <div class="w-[1px] h-2 bg-[#6E777E] mx-[0.32rem]"></div>
-                    <input class="input" type="text">
-                    <button class="rounded-full">SUBSCRIBE</button>
+                    <input class="input" v-model.trim="email" type="text">
+                    <a-button :loading="loading" shape="round" class="text-white" @click="handleSubscribe">SUBSCRIBE</a-button>
                 </div>
                 <p class="text-[#808080] text-[0.36rem] mt-3"><span>Terms of Service</span> <span class="ml-4">Privacy Policy</span></p>
             </div>
@@ -21,7 +21,7 @@
                 </div>
                 <div v-else class="flex items-center gap-x-[0.6rem] my-3">
                     <!-- <a href="https://discord.gg/Rcmgth4a" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="DISCORD" alt=""></a> -->
-                    <a href="https://twitter.com/Dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTER" alt=""></a>
+                    <a href="https://twitter.com/DormyAI" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTER" alt=""></a>
                     <a href="https://medium.com/@dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MD" alt=""></a>
                 </div>
                 <p class="text-[#808080] text-[0.36rem]">Copyright © 2023 DormyAI</p>
@@ -33,6 +33,10 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, watchEffect } from 'vue';
+import service from '@/axios';
+import qs from 'qs';
+import { Notification } from '@arco-design/web-vue';
+
 const LOGO = new URL('@/assets/images/logo_footer.png', import.meta.url).href
 const DISCORD = new URL('@/assets/images/icon-discord.png', import.meta.url).href
 const TWITTER = new URL('@/assets/images/icon-twitter.png', import.meta.url).href
@@ -51,6 +55,43 @@ watchEffect(() => {
     isLight.value = true
   }
 })
+
+const email = ref('')
+const loading = ref(false)
+
+const handleSubscribe = async () => {
+
+    let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (!reg.test(email.value)) {
+        return Notification.error({
+            title: 'Please enter your usual email address.',
+            duration: 2000
+        })
+    }
+
+    if (loading.value) return;
+    loading.value = true
+    let resultRes = await service({
+        url: "/api/v1/common/mail_subscribe",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "sign": "5Z4zWZO02eapg9igCUtwk5Z4zWZpg9igCUtwk5Z4zWZO02eapg9igCUtwk"
+        },
+        method: "post",
+        data: qs.stringify({
+            email: email.value
+        })
+    })
+    loading.value = false
+    if (resultRes.code == 200) {
+        email.value = ''
+        return Notification.success({
+            title: 'Successfully!',
+            duration: 2000
+        })
+    }
+    
+}
 
 </script>
 
@@ -81,7 +122,7 @@ footer {
             button {
                 font-size: 18px;
                 background-color: #3B5CFF;
-                padding: 12px 16px;
+                color: white;
                 border: 0;
             }
         }
