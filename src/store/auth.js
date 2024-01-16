@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import { getToken, setToken, removeToken } from '@/utils'
 import { userLogin, loginUserInfo } from '@/api'
-import { disconnect, getNetwork } from '@wagmi/core';
+import { disconnect, getNetwork, switchNetwork } from '@wagmi/core';
+import { useWeb3Modal } from '@web3modal/wagmi/vue'
+import { wagmiConfig, chains } from '@/libs/wagmi'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({ 
@@ -29,8 +31,26 @@ export const useAuthStore = defineStore('auth', {
             this._token = t
         },
         getCurNetwork() {
-            this._network = getNetwork()
-            console.log('::>', this._network)
+            this._network = getNetwork().chain
+        },
+        connectWallet() {
+            const modal = useWeb3Modal()
+            // 未登录，先召唤起登录
+            if (!this._token) {
+                modal.open()
+            }
+        },
+        changeNetword() {
+            const modal = useWeb3Modal()
+            modal.open({ view: 'Networks' })
+        },
+        switchNetwork() {
+            return new Promise((resolve, reject) => {[
+                switchNetwork({ chainId: chains[0].id }).then(res => {
+                    console.log('::::::>>>res', res)
+                    resolve()
+                })
+            ]})
         },
         userLoginToken() {
             return new Promise((resolve, reject) => {
@@ -67,6 +87,7 @@ export const useAuthStore = defineStore('auth', {
             removeToken()
             this._token = ''
             this._user = null
+            this._address = ''
             disconnect()
         }
     },

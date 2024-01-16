@@ -2,18 +2,17 @@
 import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useAuthStore } from '@/store/auth'
 import { getAccount, signMessage, disconnect, getNetwork } from '@wagmi/core';
-import { useWeb3Modal, useWeb3ModalState, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
+import { useWeb3ModalState } from '@web3modal/wagmi/vue'
 import { signMsg } from '@/api'
 import { IconUser } from '@arco-design/web-vue/es/icon';
 
-const modal = useWeb3Modal()
 const state = useWeb3ModalState()
 const authStore = useAuthStore()
 const loginLoading = ref(false)
 
 // 获取签名
 watchEffect(() => {
-    if (!!authStore.address) {
+    if (!!authStore.address && !authStore.token) {
         
         loginLoading.value = true
 
@@ -51,22 +50,18 @@ watch(() => state.open, async (val) => {
 })
 
 onMounted(async () => {
-    // authStore.getCurNetwork()
-    // await authStore.getCurNetwork()
     authStore.getCurNetwork()
-    // console.log('account:::', account)
+    let account = await getAccount()
+    authStore.setAddress(account.address || null)
     
 })
 
 const handleConncetWallet = () => {
-    // 未登录，先召唤起登录
-    if (!authStore.token) {
-        modal.open()
-    }
+    authStore.connectWallet()
 }
 
 const handleChangeNetwork = () => {
-    modal.open({ view: 'Networks' })
+    authStore.changeNetword()
 }
 
 const handleLogout = () => {

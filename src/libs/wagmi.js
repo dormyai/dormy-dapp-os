@@ -33,7 +33,7 @@ const metadata = {
     icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-const wagmiConfig = createConfig({
+export const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: [
         new WalletConnectConnector({ chains, options: { projectId, showQrModal: false, metadata } }),
@@ -55,3 +55,7 @@ createWeb3Modal({
         '--w3m-accent': 'rgba(59, 92, 255, 1)',
     }
 })
+
+export {
+    chains
+}

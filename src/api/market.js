@@ -22,3 +22,25 @@ export function propertyDetail(data = {}) {
         data: qs.stringify(data),
     });
 }
+
+export function userPropertList(params = {}) {
+    return axios({
+        url: "/api/v1/property/userPropertList",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "get",
+        params,
+    });
+}
+
+export function calculateUserProperty(params = {}) {
+    return axios({
+        url: "/api/v1/property/calculateUserProperty",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "get",
+        params,
+    });
+}

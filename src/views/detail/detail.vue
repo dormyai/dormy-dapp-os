@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import { propertyDetail } from '@/api';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent } from '@wagmi/core'
 import { propertyAddress, propertyAbi, usdtAddress, dormyAddress, dormyAbi } from '@/abi'
 import { IconQuestionCircle, IconExclamationCircle } from '@arco-design/web-vue/es/icon';
@@ -18,7 +18,8 @@ import 'swiper/css/navigation';
 
 const store = useAuthStore()
 
-const router = useRoute()
+const route = useRoute()
+const router = useRouter()
 const detailContent = ref(null)
 const detailChaniContent = ref(null)
 const detailMedia = ref([])
@@ -78,7 +79,7 @@ const youPay = computed(() => {
     return result
 })
 const mintDisabled = computed(() => {
-
+    return youBuy.value > 0 && balance.value > 0
 })
 
 const getAccountToken = async () => {
@@ -107,6 +108,12 @@ const handleMintOp = async () => {
     // 2. checkApproval
     // 3. approveTokens
     // 4. mint
+
+    store.switchNetwork().then(res => {
+        console.log('::::::>>>res2', res)
+    })
+
+    return;
     let account = await getAccount()
     let checkAllow = await checkApproval(account.address)
 
@@ -191,7 +198,7 @@ const handleMint = async (address) => {
 
 const getDetailContent = () => {
     return propertyDetail({
-        id: router.params.id
+        id: route.params.id
     }).then(res => {
         if (res.code == 200) {
             detailContent.value = res.data.property_info
@@ -216,14 +223,17 @@ const calculatePrice = (bigVal) => {
     return new Big(bigVal).toString()
 }
 
+const goback = () => {
+    router.go(-1)
+}
+
 </script>
 
 <template>
-    <div class="back pt-2 cursor-pointer md:w-[28rem] mx-auto flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
+    <div @click="goback" class="back pt-2 cursor-pointer md:w-[28rem] mx-auto flex items-center text-[#0E1D67] text-[0.36rem]"><div class="icon i-solar-arrow-left-outline"></div><p>Back to listing properties</p></div>
     <div class="detail-container md:w-[28rem] mx-auto flex items-start">
         <main class="main">
-            <!-- detailMedia[currentSwipper]?.url -->
-            <Image class="preview-image" :src="null" />
+            <Image class="preview-image" :src="detailMedia[currentSwipper]?.url" />
             <div class="swiper-wrapper">
                 <swiper
                 :slidesPerView="'auto'"
@@ -234,7 +244,10 @@ const calculatePrice = (bigVal) => {
                 class="my-swiper"
                 @slideChange="onSlideChange"
                 >
-                    <swiper-slide v-for="item,index in detailMedia" :key="index" class="swiper-slide"><img class="thumbnail" :src="item.url" alt=""></swiper-slide>
+                    <swiper-slide v-for="item,index in detailMedia" :key="index" class="swiper-slide">
+                        <!-- <img class="thumbnail" :src="item.url" alt=""> -->
+                        <Image class="thumbnail" :src="item.url" />
+                    </swiper-slide>
                 </swiper>
             </div>
 
@@ -428,7 +441,8 @@ const calculatePrice = (bigVal) => {
                     <p class="tips">Projected Annual Return: 0</p>
                 </div>
                 <div class="mt-4">
-                    <a-button @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>
+                    <a-button v-if="!store.address" @click="store.connectWallet()" type="primary" shape="round" long>Connect Wallet</a-button>
+                    <a-button v-else :disabled="!mintDisabled" @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>
                 </div>
             </div>
         </aside>
@@ -460,7 +474,6 @@ const calculatePrice = (bigVal) => {
         .preview-image {
             width: 100%;
             height: 30vw;
-            object-fit: cover;
             display: block;
             border-radius: 16px 16px 0 0;
         }
