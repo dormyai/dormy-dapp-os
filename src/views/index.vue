@@ -23,17 +23,17 @@
             <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
                 <dt class="img-wrapper"><img :src="ICON02" alt=""></dt>
                 <dd class="font-bold">Transparent Transactions</dd>
-                <dd>Make investment by Web3 wallet to ensure security</dd>
+                <dd>Every transaction is on chain and transparent to all investors</dd>
             </dl>
             <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
                 <dt class="img-wrapper"><img :src="ICON03" alt=""></dt>
                 <dd class="font-bold">Efficient Buying Process</dd>
-                <dd>Make investment by Web3 wallet to ensure security</dd>
+                <dd>Reject the traditional lengthy property buying process</dd>
             </dl>
             <dl class="flex flex-col items-center" data-aos="fade-up" data-aos-once="true">
                 <dt class="img-wrapper"><img :src="ICON04" alt=""></dt>
                 <dd class="font-bold">Easy to Use</dd>
-                <dd>Make investment by Web3 wallet to ensure security</dd>
+                <dd>Complete the investments with just a few clicks</dd>
             </dl>
         </div>
     </div>
