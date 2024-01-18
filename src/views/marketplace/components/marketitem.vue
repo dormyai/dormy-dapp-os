@@ -42,11 +42,11 @@
             <div class="price bg-[#F6F6F6] grid grid-cols-2">
                 <div>
                     <h1>Total Price</h1>
-                    <h2><strong>${{ item.property_info.total_investment_value }}</strong> ≈ £240,000</h2>
+                    <h2><strong>${{ item.property_info.total_investment_value }}</strong> ≈ £{{ item.property_info.total_investment_value * commonstore.rate }}</h2>
                 </div>
                 <div>
                     <h1>Sqft Price</h1>
-                    <h2><strong>${{ item.property_chain_info.token_price }}</strong> ≈ £240,000</h2>
+                    <h2><strong>${{ item.property_chain_info.token_price }}</strong> ≈ £{{ item.property_chain_info.token_price * commonstore.rate }}</h2>
                 </div>
             </div>
             <div class="info flex items-center mt-1">
@@ -68,9 +68,12 @@ import { useRouter } from "vue-router";
 import { propertyAddress, propertyAbi } from '@/abi'
 import { readContract } from '@wagmi/core'
 import Loading from '@/components/Loading.vue'
+import { commonStore } from '@/store/common'
 import Big from 'big.js';
 import 'swiper/css';
 import 'swiper/css/navigation';
+
+const commonstore = commonStore()
 
 const router = useRouter()
 const props = defineProps({

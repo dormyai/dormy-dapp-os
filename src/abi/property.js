@@ -1,4 +1,4 @@
-export const propertyAddress = '0x8dae1dE0872bb851E60A3917Da620a1D559c803C'
+export const propertyAddress = '0x069C3198bBd9a7F71cbf7e80A9c1C9d5f2Dd4052'
 export const propertyAbi = [
     {
         "inputs": [

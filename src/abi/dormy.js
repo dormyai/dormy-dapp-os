@@ -1,10 +1,10 @@
-export const dormyAddress = '0xDe07EcdDd87aD3d7D4C038527f88D021c6e8932a'
+export const dormyAddress = '0xe403A238d9786d0cf30d32F35A39731b26e394ac'
 export const dormyAbi = [
     {
         "inputs": [
             {
                 "internalType": "address",
-                "name": "PropertyManagerAddress",
+                "name": "propertyManagerAddress",
                 "type": "address"
             },
             {
@@ -108,12 +108,6 @@ export const dormyAbi = [
             {
                 "indexed": true,
                 "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
                 "name": "slot",
                 "type": "uint256"
             },
@@ -124,7 +118,7 @@ export const dormyAbi = [
                 "type": "uint256"
             }
         ],
-        "name": "Minted",
+        "name": "Mint",
         "type": "event"
     },
     {
@@ -217,23 +211,10 @@ export const dormyAbi = [
     },
     {
         "inputs": [],
-        "name": "PropertyManager",
-        "outputs": [
-            {
-                "internalType": "contract IPropertyManager",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "accessControl",
         "outputs": [
             {
-                "internalType": "contract AccessControl",
+                "internalType": "contract IAccessControl",
                 "name": "",
                 "type": "address"
             }
@@ -488,6 +469,19 @@ export const dormyAbi = [
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "propertyManager",
+        "outputs": [
+            {
+                "internalType": "contract IPropertyManager",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -554,6 +548,38 @@ export const dormyAbi = [
         "name": "setApprovalForAll",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "index_",
+                "type": "uint256"
+            }
+        ],
+        "name": "slotByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "slotCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -648,6 +674,30 @@ export const dormyAbi = [
     {
         "inputs": [
             {
+                "internalType": "uint256",
+                "name": "slot_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index_",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenInSlotByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "address",
                 "name": "owner_",
                 "type": "address"
@@ -659,6 +709,25 @@ export const dormyAbi = [
             }
         ],
         "name": "tokenOfOwnerByIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "slot_",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenSupplyInSlot",
         "outputs": [
             {
                 "internalType": "uint256",

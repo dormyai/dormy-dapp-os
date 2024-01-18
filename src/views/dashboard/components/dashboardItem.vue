@@ -17,7 +17,8 @@ const dateFormat = (time) => {
 <template>
     <div class="item flex items-center px-[0.36rem] py-[0.8rem]">
         <div class="w-[12.5rem] flex items-center gap-2">
-            <Image class="list-image ml-2" :src="item.property_info_medium[0].url" />
+            <Image v-if="item.property_info_medium && item.property_info_medium.length > 0" class="list-image ml-2" :src="item.property_info_medium[0].url" />
+            <Image v-else class="list-image ml-2" :src="''" />
             <div class="text-left">
                 <h3 class="m-h3 truncate flex-1">{{ item.property_info.address1 }},{{ item.property_info.address2 }}</h3>
                 <p class="name">{{ item.property_info.property_number }}</p>

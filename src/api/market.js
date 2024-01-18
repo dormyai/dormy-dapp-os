@@ -44,3 +44,14 @@ export function calculateUserProperty(params = {}) {
         params,
     });
 }
+
+export function getRate(data = {}) {
+    return axios({
+        url: "/api/v1/common/get_rate",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "post",
+        data: qs.stringify(data),
+    });
+}

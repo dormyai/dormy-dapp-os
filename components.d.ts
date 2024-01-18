@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
-    AAvatar: typeof import('@arco-design/web-vue')['Avatar']
     AButton: typeof import('@arco-design/web-vue')['Button']
     ACollapse: typeof import('@arco-design/web-vue')['Collapse']
     ACollapseItem: typeof import('@arco-design/web-vue')['CollapseItem']
@@ -16,14 +15,9 @@ declare module 'vue' {
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
     AInput: typeof import('@arco-design/web-vue')['Input']
     APagination: typeof import('@arco-design/web-vue')['Pagination']
-    ADoption: typeof import('@arco-design/web-vue')['Doption']
-    ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
-    AInput: typeof import('@arco-design/web-vue')['Input']
-    APagination: typeof import('@arco-design/web-vue')['Pagination']
     AppLoading: typeof import('./src/components/layout/appLoading.vue')['default']
     AProgress: typeof import('@arco-design/web-vue')['Progress']
-    ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
-    AProgress: typeof import('@arco-design/web-vue')['Progress']
+    ASpin: typeof import('@arco-design/web-vue')['Spin']
     ATag: typeof import('@arco-design/web-vue')['Tag']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
     ConnectWallet: typeof import('./src/components/ConnectWallet.vue')['default']

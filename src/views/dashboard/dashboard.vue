@@ -35,6 +35,10 @@ const getList = () => {
     if(listLoading.value) return;
 
     listLoading.value = true
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
     userPropertList({
         pn: listParams.value.pn,
         ps: listParams.value.ps
@@ -49,8 +53,16 @@ const getList = () => {
     })
 }
 
-onMounted(() => {
+const handleTurnpage = (e) => {
+    if (listParams.value.pn != e) {
+        listParams.value.pn = e
+        getList()
+    }
+}
 
+onMounted(() => {
+    getDashboard()
+    getList()
 })
 
 watch(
@@ -120,16 +132,16 @@ watch(
                         <a-button @click="authStore.connectWallet" class="login-button" size="small" type="outline" shape="round">Connect Wallet</a-button>
                     </template>
                 </Empty>
-                <template v-else>
+                <a-spin v-else :loading="listLoading" class="w-full">
                     <Empty v-if="!listLoading && propertyList.list?.length == 0" class="py-8" />
                     <div class="list-box">
                         <DashboardItem v-for="item,index in propertyList.list" :item="item" :key="index" />
-                        <div class="text-center py-4" v-if="listLoading"><Loading /></div>
+                        <!-- <div class="text-center py-4" v-if="listLoading"><Loading /></div> -->
                     </div>
                     <div class="text-right mt-3 flex justify-end">
-                        <a-pagination :size="'small'" :total="listTotal"/>
+                        <a-pagination :size="'small'" :current="listParams.pn" :total="listTotal" @change="handleTurnpage"/>
                     </div>
-                </template>
+                </a-spin>
             </main>
         </div>
 

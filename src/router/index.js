@@ -79,7 +79,7 @@ router.beforeEach((to, from, next) => {
 
     const authStore = useAuthStore()
     if (!authStore.user) { // 有 token ，没有用户信息，则请求用户信息
-      authStore.userLoginInfo()
+      authStore.loginWithToken()
     }
 
     next()

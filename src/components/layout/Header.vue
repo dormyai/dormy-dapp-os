@@ -1,9 +1,8 @@
 <script setup>
 import { onMounted, ref, watch, watchEffect } from 'vue';
-import { useAuthStore } from '@/store/auth'
-import { getAccount, signMessage, disconnect, getNetwork } from '@wagmi/core';
-import { useWeb3ModalState } from '@web3modal/wagmi/vue'
-import { signMsg } from '@/api'
+import { useAuthStore } from '@/store/auth';
+import { getAccount, watchNetwork, getNetwork, watchAccount } from '@wagmi/core';
+import { useWeb3ModalState } from '@web3modal/wagmi/vue';
 import { IconUser } from '@arco-design/web-vue/es/icon';
 
 const state = useWeb3ModalState()
@@ -16,20 +15,7 @@ watchEffect(() => {
         
         loginLoading.value = true
 
-        signMsg({
-            address: authStore.address
-        }).then(async res => {
-            if (res.code == 200) {
-                
-                const signature = await signMessage({
-                    message: res.data.msg,
-                })
-                authStore.setSing(signature)
-                await authStore.userLoginToken()
-                authStore.userLoginInfo()
-            } else {
-                disconnect()
-            }
+        authStore.loginWithSignature().then(res => {
             loginLoading.value = false
         })
     }
@@ -50,10 +36,22 @@ watch(() => state.open, async (val) => {
 })
 
 onMounted(async () => {
-    authStore.getCurNetwork()
+    authStore.setCurNetwork(getNetwork().chain)
     let account = await getAccount()
     authStore.setAddress(account.address || null)
-    
+
+    watchNetwork((e) => {
+        authStore.setCurNetwork(e.chain)
+    })
+
+    watchAccount((a) => {
+        if (a.address) {
+            console.log('a:', a)
+            authStore.setAddress(a.address)
+            authStore.loginWithSignature()
+        }
+    })
+      
 })
 
 const handleConncetWallet = () => {
@@ -73,13 +71,13 @@ const handleLogout = () => {
 <template>
     <header class="sticky top-0 w-full">
         <div class="inner md:w-[28rem] mx-auto flex items-center gap-x-[1.44rem]">
-            <Logo class="logo block w-[3.4rem]"/>
+            <router-link to="/"><Logo class="logo block w-[3.4rem]"/></router-link>
             <router-link to="/">Home</router-link>
             <router-link to="/market">Marketplace</router-link>
             <router-link to="/dashboard">Dashboard</router-link>
-            <router-link to="/">Docs</router-link>
+            <!-- <router-link to="/">Docs</router-link> -->
             <div class="flex items-center gap-x-2 ml-auto">
-                <a-button type="outline" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
+                <a-button type="outline" v-if="authStore.user" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
     
                 <a-dropdown trigger="hover" v-if="authStore.user">
                     <a-button type="primary" shape="round">{{ authStore.user.name }}</a-button>
@@ -88,7 +86,7 @@ const handleLogout = () => {
                             <a-avatar :size="28" :style="{ backgroundColor: '#F7A2CA' }"><IconUser /></a-avatar>
                             <span class="ml-1">{{ authStore.user.name }}</span>
                         </a-doption>
-                        <a-doption>Verification: Successful</a-doption>
+                        <!-- <a-doption>Verification: Successful</a-doption> -->
                         <a-doption @click="handleLogout">Logout</a-doption>
                     </template>
                 </a-dropdown>

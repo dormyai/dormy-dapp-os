@@ -42,7 +42,11 @@ export function setupAxios() {
   // response interceptor
   service.interceptors.response.use(
     response => {
-      return response.data
+      if (response.data.code == 100008) {
+        authStore.loginWithSignatureStrict()
+      } else {
+        return response.data
+      }
     },
     error => {
       try {

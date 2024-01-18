@@ -9,6 +9,7 @@
     "preview": "rm -f ./dist.zip && vite preview --mode staging && zip -r dist.zip dist"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@wagmi/core": "^1.4.3",
     "@web3modal/ethereum": "^2.7.1",
     "@web3modal/html": "^2.7.1",

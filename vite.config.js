@@ -58,7 +58,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/localapi': {
-        // target: "http://192.168.3.49:9999",
+        // target: "http://10.17.16.114:8888",
         target: "https://dev-api.dormy.ai",
         // target: "https://www.vega.fan/v1/",
         changeOrigin: true,

@@ -31,3 +31,13 @@ export function loginUserInfo(params = {}) {
         params,
     });
 }
+export function loginByAddr(data = {}) {
+    return axios({
+        url: "/api/v1/user/login_by_addr",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "post",
+        data: qs.stringify(data),
+    });
+}

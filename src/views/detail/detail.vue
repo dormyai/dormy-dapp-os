@@ -4,11 +4,14 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import { propertyDetail } from '@/api';
 import { useRoute, useRouter } from 'vue-router';
-import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent } from '@wagmi/core'
+import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent, getContract, waitForTransaction } from '@wagmi/core'
 import { propertyAddress, propertyAbi, usdtAddress, dormyAddress, dormyAbi } from '@/abi'
 import { IconQuestionCircle, IconExclamationCircle } from '@arco-design/web-vue/es/icon';
 import { formatEther, getAddress, parseUnits } from 'viem'
 import { useAuthStore } from '@/store/auth'
+import { commonStore } from '@/store/common'
+import { Notification } from '@arco-design/web-vue';
+import { Loader } from '@googlemaps/js-api-loader';
 import Loading from '@/components/Loading.vue'
 import Image from '@/components/Image.vue'
 import Big from 'big.js';
@@ -17,6 +20,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const store = useAuthStore()
+const commonstore = commonStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -32,6 +36,10 @@ const tokenAmount = ref(null)
 const minPurchase = ref(null)
 const maxPurchase = ref(null)
 const minIncrement = ref(null)
+const minLoading = ref(false)
+
+const approveTokenHash = ref('')
+const mintHash = ref('')
 
 const youBuy = ref(1)
 const balance = ref(0)
@@ -40,6 +48,7 @@ const symbol = ref('')
 // propertyDetail
 onMounted(async () => {
     
+    commonstore.updateRate()
     await getDetailContent()
     const status = await readContract({
         address: propertyAddress,
@@ -62,7 +71,30 @@ onMounted(async () => {
     minIncrement.value = calculatePrice(ment.minIncrement)
 
     getAccountToken()
+
+    initMap()
 })
+
+const initMap = () => {
+    let position = { lat: detailContent.value.latitude || 51.504528, lng: detailContent.value.longitude || -0.128245 }
+    const loader = new Loader({
+        apiKey: "AIzaSyBS_9emP8qb1jjknH8ibBoFe7pTwUH_NAM",
+        version: "weekly",
+        libraries: ["places"]
+    });
+
+    loader.importLibrary('maps').then(() => {
+        let map = new google.maps.Map(document.getElementById("map"), {
+            center: position,
+            zoom: 10,
+        });
+        // The marker
+        const marker = new google.maps.Marker({
+            position: position,
+            map: map,
+        });
+    })
+}
 
 const calculateStock = computed(() => {
     if (!mentCon.value) return null
@@ -109,23 +141,24 @@ const handleMintOp = async () => {
     // 3. approveTokens
     // 4. mint
 
-    store.switchNetwork().then(res => {
-        console.log('::::::>>>res2', res)
+    minLoading.value = true
+    await store.switchNetwork().then(r => {
+        if (r) {
+            minLoading.value = false
+        }
     })
 
-    return;
     let account = await getAccount()
     let checkAllow = await checkApproval(account.address)
 
-    if (checkAllow == 0) { // 未授权，先去授权
-        let result = await approveTokens()
-        if (result.hash) { // 授权完成，去mint
-            handleMint(account.address)
-        }
+    if (new Big(youPay.value).cmp(new Big(checkAllow)) == 1) {
+
+        await approveTokens(account.address)
+
     } else {
         handleMint(account.address)
     }
-    console.log('checkAllow::', checkAllow)
+   
 }
 
 const checkApproval = async (address) => {
@@ -133,65 +166,83 @@ const checkApproval = async (address) => {
         address: usdtAddress,
         abi: erc20ABI,
         functionName: 'allowance',
-        args: [address, usdtAddress]
+        args: [address, dormyAddress]
     })
     return formatEther(allowance)
 }
 
 const approveTokens = async (address) => {
-    let approve = await writeContract({
-        address: usdtAddress,
-        abi: erc20ABI,
-        functionName: 'approve',
-        args: [dormyAddress, parseUnits((youPay.value).toString(), 18)],
-        account: address
-    })
-    return approve
+    try {
+        const approveTokenConfig = await prepareWriteContract({
+            address: usdtAddress,
+            abi: erc20ABI,
+            functionName: 'approve',
+            account: address,
+            args: [dormyAddress, parseUnits((youPay.value).toString(), 18)],
+        });
+        let approve = await writeContract(approveTokenConfig)
+
+        waitForTransaction({
+            hash: approve.hash,
+        }).then(r => {
+            if (r.status == 'success') {
+                handleMint(address)
+            } else {
+                Notification.error({
+                    title: 'Error',
+                    duration: 2000
+                })
+            }
+        })
+    } catch(err) {
+        minLoading.value = false
+        return Notification.error({
+            title: err.message,
+            duration: 3000
+        })
+    }
 }
 
 const handleMint = async (address) => {
 
     let params = [address, 1, youBuy.value]
-    let config;
 
     try {
-        config = await prepareWriteContract({
+        let config = await prepareWriteContract({
             address: dormyAddress,
             abi: dormyAbi,
             functionName: 'mint',
             args: params,
             overrides: {
+                value: youBuy.value,
                 gasLimit: 300000,
                 from: address
             },
-            // chainId: store.network.chain.id,
+            chainId: store.network.id,
             account: address
         })
-    } catch (err) {
-        console.log('err::', err, err.message)
-    }
 
-    watchContractEvent({
-        address: dormyAddress,
-        abi: dormyAbi,
-        eventName: 'Minted'
-    }, (data) => {
-        console.log('watch::', data)
-    })
-
-    try {
         const result = await writeContract(config)
-        console.log('result::::', result)
-        result.wait().then((receipt) => {
-            if(receipt.status == 0) { // 交易失败
-                console.log('mint 失败>>>>>>>')
+        mintHash.value = result.hash
+
+        waitForTransaction({
+            hash: result.hash,
+        }).then(r => {
+            if (r.status == 'success') {
+                Notification.success({
+                    title: 'Successful!',
+                    duration: 3000
+                })
             }
-            if (getAddress(receipt.from) == getAddress(address)) {
-                console.log('mint 成功>>>>>>>')
-            }
+            minLoading.value = false
         })
     } catch (err) {
-        console.log('err::', err, err.message)
+        minLoading.value = false
+        
+        return Notification.error({
+            title: err.message,
+            duration: 4000
+        })
     }
     
 }
@@ -372,7 +423,7 @@ const goback = () => {
                 <div class="top flex items-center flex-wrap text-[0.36rem] px-[0.56rem] py-[0.4rem]">
                     <p class="font-bold whitespace-nowrap">Token Price:</p>
                     <span class="text-[#F6615A] font-bold mx-1 text-[0.42rem]">${{ tokenPrice }}</span>
-                    <span class="text-[#888A9A] whitespace-nowrap">≈ £160</span>
+                    <span class="text-[#888A9A] whitespace-nowrap">≈ £{{ tokenPrice * commonstore.rate }}</span>
                 </div>
                 <div class="px-[0.56rem] py-[0.1rem]">
                     <div class="cell"><span class="label">Token name:</span><span class="value" v-if="tokenName">{{ tokenName }}</span><Loading class="ml-auto" v-else /></div>
@@ -442,7 +493,7 @@ const goback = () => {
                 </div>
                 <div class="mt-4">
                     <a-button v-if="!store.address" @click="store.connectWallet()" type="primary" shape="round" long>Connect Wallet</a-button>
-                    <a-button v-else :disabled="!mintDisabled" @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>
+                    <a-button v-else :disabled="!mintDisabled" :loading="minLoading" @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>
                 </div>
             </div>
         </aside>
@@ -485,7 +536,7 @@ const goback = () => {
             .my-swiper {
                 box-sizing: border-box;
                 padding: 16px 50px;
-                width: 812px;
+                width: 932px;
                 height: 214px;
                 .swiper-slide {
                     width: 226px;
