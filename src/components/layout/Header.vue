@@ -79,7 +79,7 @@ const handleLogout = () => {
             <div class="flex items-center gap-x-2 ml-auto">
                 <a-button type="outline" v-if="authStore.user" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
     
-                <a-dropdown trigger="hover" v-if="authStore.user">
+                <a-dropdown v-if="authStore.user">
                     <a-button type="primary" shape="round">{{ authStore.user.name }}</a-button>
                     <template #content>
                         <a-doption class="flex items-center">
@@ -112,11 +112,22 @@ header {
     }
 }
 </style>
-<style>
-.arco-dropdown-option-content {
-    color: #5E6F86;
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
+<style lang="less">
+.arco-dropdown {
+    padding: 0;
+    .arco-dropdown-option {
+        &:hover {
+            .arco-dropdown-option-content {
+                color: #3B5CFF;
+            }
+        }
+        .arco-dropdown-option-content {
+            color: #5E6F86;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            line-height: 3.4;
+        }
+    }
 }
 </style>

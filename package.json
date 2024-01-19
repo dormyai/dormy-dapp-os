@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "rm -f ./dist.zip && vite build --mode production && zip -r dist.zip dist",
-    "preview": "rm -f ./dist.zip && vite preview --mode staging && zip -r dist.zip dist"
+    "preview": "rm -f ./dist.zip && vite build --mode staging && zip -r dist.zip dist"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
