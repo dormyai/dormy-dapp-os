@@ -1,4 +1,4 @@
-export const propertyAddress = '0x069C3198bBd9a7F71cbf7e80A9c1C9d5f2Dd4052'
+export const propertyAddress = '0x51523B9CA66E4d6ED247f1d617165091c820a7b6'
 export const propertyAbi = [
     {
         "inputs": [
@@ -10,6 +10,31 @@ export const propertyAbi = [
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "propertyId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "propertyNumber",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "propertyAddress",
+                "type": "address"
+            }
+        ],
+        "name": "PropertyCreated",
+        "type": "event"
     },
     {
         "anonymous": false,
@@ -31,6 +56,63 @@ export const propertyAbi = [
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "soltId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "soldQuantity",
+                "type": "uint256"
+            }
+        ],
+        "name": "PropertySoldQuantityUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "string",
+                "name": "propertyNumber",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IProperty.PropertyStatus",
+                "name": "newStatus",
+                "type": "uint8"
+            }
+        ],
+        "name": "PropertyStatusUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "string",
+                "name": "propertyNumber",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IProperty.TenancyStatus",
+                "name": "newStatus",
+                "type": "uint8"
+            }
+        ],
+        "name": "PropertyTenancyStatusUpdated",
+        "type": "event"
+    },
+    {
         "inputs": [],
         "name": "PropertyCount",
         "outputs": [
@@ -48,7 +130,7 @@ export const propertyAbi = [
         "name": "accessControl",
         "outputs": [
             {
-                "internalType": "contract AccessControl",
+                "internalType": "contract IAccessControl",
                 "name": "",
                 "type": "address"
             }
@@ -160,9 +242,9 @@ export const propertyAbi = [
                         "type": "uint256"
                     },
                     {
-                        "internalType": "uint256",
+                        "internalType": "uint64",
                         "name": "rentStartDate",
-                        "type": "uint256"
+                        "type": "uint64"
                     },
                     {
                         "internalType": "uint64",
@@ -272,7 +354,7 @@ export const propertyAbi = [
         "name": "getPropertyInfoBySolt",
         "outputs": [
             {
-                "internalType": "contract Property",
+                "internalType": "contract IProperty",
                 "name": "",
                 "type": "address"
             }
@@ -323,9 +405,9 @@ export const propertyAbi = [
                         "type": "uint256"
                     },
                     {
-                        "internalType": "uint256",
+                        "internalType": "uint64",
                         "name": "rentStartDate",
-                        "type": "uint256"
+                        "type": "uint64"
                     },
                     {
                         "internalType": "uint64",
@@ -372,7 +454,7 @@ export const propertyAbi = [
         "name": "propertys",
         "outputs": [
             {
-                "internalType": "contract Property",
+                "internalType": "contract IProperty",
                 "name": "",
                 "type": "address"
             }

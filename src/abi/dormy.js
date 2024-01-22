@@ -1,4 +1,4 @@
-export const dormyAddress = '0xe403A238d9786d0cf30d32F35A39731b26e394ac'
+export const dormyAddress = '0x97d0524Fae8ce23cDcb0ABb26a9E9E750c0C208D'
 export const dormyAbi = [
     {
         "inputs": [

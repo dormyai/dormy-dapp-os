@@ -1,9 +1,47 @@
-export const controlAddress = '0xF43684B95E0F7Bc1Ab638C11076Ff2F5d548cF47'
+export const controlAddress = '0xb1F611c1cFCd65094343F000c6FEa1Fa57341b90'
 export const controlAbi = [
     {
         "inputs": [],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum AccessControl.Role",
+                "name": "role",
+                "type": "uint8"
+            }
+        ],
+        "name": "RoleRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum AccessControl.Role",
+                "name": "role",
+                "type": "uint8"
+            }
+        ],
+        "name": "RoleSet",
+        "type": "event"
     },
     {
         "inputs": [

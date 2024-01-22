@@ -76,7 +76,7 @@ onMounted(async () => {
 })
 
 const initMap = () => {
-    let position = { lat: detailContent.value.latitude || 51.504528, lng: detailContent.value.longitude || -0.128245 }
+    let position = { lat: Number(detailContent.value.latitude) || 51.504528, lng: Number(detailContent.value.longitude) || -0.128245 }
     const loader = new Loader({
         apiKey: "AIzaSyBS_9emP8qb1jjknH8ibBoFe7pTwUH_NAM",
         version: "weekly",
@@ -195,6 +195,7 @@ const approveTokens = async (address) => {
             }
         })
     } catch(err) {
+        console.log('err:', err)
         minLoading.value = false
         return Notification.error({
             title: err.message,
@@ -237,6 +238,7 @@ const handleMint = async (address) => {
             minLoading.value = false
         })
     } catch (err) {
+        console.log('err:', err)
         minLoading.value = false
         
         return Notification.error({

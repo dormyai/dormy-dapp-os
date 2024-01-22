@@ -114,7 +114,7 @@ onMounted(async () => {
 })
 
 const handleGotoDetail = () => {
-    router.push(`/market/detail/` + props.item.property_info.property_number)
+    router.push(`/market/detail/` + props.item.property_info.id)
 }
 const onSlideChange = (e) => {
     currentSwipper.value = e.activeIndex
