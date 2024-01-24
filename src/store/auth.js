@@ -78,10 +78,16 @@ export const useAuthStore = defineStore('auth', {
                     address: this.address
                 }).then(async res => {
                     if (res.code == 200) {
-                        // 用户签名信息
-                        this._sign = await signMessage({ message: res.data.msg })
-                        await this.getLoginToken()
-                        await this.loginWithToken()
+
+                        try {
+                            // 用户签名信息
+                            this._sign = await signMessage({ message: res.data.msg })
+                            await this.getLoginToken()
+                            await this.loginWithToken()
+                        } catch (err) {
+                            this.logout()
+                            reject()
+                        }
                     } else {
                         this.logout()
                         return Notification.error({

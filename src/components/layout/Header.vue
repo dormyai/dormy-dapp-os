@@ -17,6 +17,8 @@ watchEffect(() => {
 
         authStore.loginWithSignature().then(res => {
             loginLoading.value = false
+        }).catch(() => {
+            loginLoading.value = false
         })
     }
 }, [authStore.address])
@@ -37,15 +39,18 @@ watch(() => state.open, async (val) => {
 
 onMounted(async () => {
     authStore.setCurNetwork(getNetwork().chain)
-    let account = await getAccount()
-    authStore.setAddress(account.address || null)
+
+    if (!!authStore.token) {
+        let account = await getAccount()
+        authStore.setAddress(account.address || null)
+    }
 
     watchNetwork((e) => {
         authStore.setCurNetwork(e.chain)
     })
 
     watchAccount((a) => {
-        if (a.address) {
+        if (a.address && !!authStore.token) {
             console.log('a:', a)
             authStore.setAddress(a.address)
             authStore.loginWithSignature()
