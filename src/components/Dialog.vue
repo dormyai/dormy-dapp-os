@@ -1,22 +1,34 @@
 <template>
-    <a-modal class="wallet-container" v-model:visible="visible" @ok="handleOk" @cancel="handleCancel" :footer="false" :title-align="'start'">
+    <a-modal class="wallet-container" :width="width" v-model:visible="visible" @ok="handleOk" @close="handleClose" @cancel="handleCancel" :footer="false" :title-align="'start'">
         <template #title>
-            Connect a Wallet
+            {{ props.title }}
         </template>
-        <div>You can customize modal body text by the current situation. This modal will be closed immediately once you
-            press the OK button.</div>
+        <slot name="main"></slot>
     </a-modal>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue';
-const props = defineProps(['modelValue'])
-const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue: {
+        type: String,
+    },
+    title: {
+        type: String,
+        default: ''
+    },
+    width: {
+        type: String,
+        default: '520px'
+    }
+})
+const emit = defineEmits(['update:modelValue', 'close'])
 
 const visible = ref(false)
 watch(
     () => props.modelValue,
     (val) => {
+        console.log('val:',val)
         if (visible.value !== val) {
             visible.value = val
         }
@@ -37,6 +49,9 @@ const handleOk = () => {
 const handleCancel = () => {
 
 }
+const handleClose = () => {
+    emit('close')
+}
 </script>
 
 <style lang="less">
@@ -45,6 +60,8 @@ const handleCancel = () => {
     .arco-modal-header {
      border-bottom: none;
    }
-
+   .arco-modal {
+        max-width: 90% !important;
+   }
 }
 </style>

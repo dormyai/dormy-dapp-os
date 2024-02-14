@@ -44,6 +44,8 @@ export function setupAxios() {
     response => {
       if (response.data.code == 100008) {
         authStore.loginWithSignatureStrict()
+      } else if (response.data.code == 100005) {
+        authStore.logout()
       } else {
         return response.data
       }

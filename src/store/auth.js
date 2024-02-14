@@ -48,12 +48,14 @@ export const useAuthStore = defineStore('auth', {
         switchNetwork() {
             return new Promise((resolve, reject) => {
                 if (this._network.id == import.meta.env.VITE_BASE_CHAINID) {
-                    resolve()
+                    resolve('default')
                 } else {
                     switchNetwork({ chainId: chains[0].id }).then(res => {
                         console.log('switchNetwork:', res)
                         this.setCurNetwork(res)
                         resolve('change')
+                    }).catch(() => {
+                        reject()
                     })
                 }
             })

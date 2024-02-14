@@ -1,6 +1,6 @@
 import { createWeb3Modal } from '@web3modal/wagmi/vue'
 import { walletConnectProvider, EIP6963Connector } from '@web3modal/wagmi'
-
+import { blastsepolia } from './blasttest'
 import { configureChains, createConfig } from '@wagmi/core'
 import { mainnet, polygonMumbai, polygon } from 'viem/chains'
 import { publicProvider } from '@wagmi/core/providers/public'
@@ -14,12 +14,13 @@ const projectId = '0a3bd06ad2697a71e4662e217f1a4189'
 
 // 2. Configure wagmi client
 const { chains, publicClient } = configureChains(
-    [polygonMumbai, mainnet, polygon],
+    [polygonMumbai, mainnet, polygon, blastsepolia],
     [
         // walletConnectProvider({ projectId }), 
         // publicProvider(),
         jsonRpcProvider({
             rpc: (chain) => ({
+                // http: `https://rpc-mumbai.maticvigil.com`,
                 http: `https://rpc-mumbai.maticvigil.com`,
             }),
         }),

@@ -1,16 +1,16 @@
-<script setup>
+<script setup lang="jsx">
 import { ref, onMounted, computed } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation } from 'swiper/modules';
 import { propertyDetail } from '@/api';
 import { useRoute, useRouter } from 'vue-router';
-import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, watchContractEvent, getContract, waitForTransaction } from '@wagmi/core'
+import { readContract, erc20ABI, getAccount, writeContract, prepareWriteContract, getNetwork, getContract, waitForTransaction } from '@wagmi/core'
 import { propertyAddress, propertyAbi, usdtAddress, dormyAddress, dormyAbi } from '@/abi'
 import { IconQuestionCircle, IconExclamationCircle } from '@arco-design/web-vue/es/icon';
 import { formatEther, getAddress, parseUnits } from 'viem'
 import { useAuthStore } from '@/store/auth'
 import { commonStore } from '@/store/common'
-import { Notification } from '@arco-design/web-vue';
+import { Notification, Space, Button } from '@arco-design/web-vue';
 import { Loader } from '@googlemaps/js-api-loader';
 import Loading from '@/components/Loading.vue'
 import Image from '@/components/Image.vue'
@@ -78,7 +78,7 @@ onMounted(async () => {
 const initMap = () => {
     let position = { lat: Number(detailContent.value.latitude) || 51.504528, lng: Number(detailContent.value.longitude) || -0.128245 }
     const loader = new Loader({
-        apiKey: "AIzaSyBS_9emP8qb1jjknH8ibBoFe7pTwUH_NAM",
+        apiKey: "AIzaSyDuvfD-QZ9riDmGljBVe9wQiuXgKvZbY5E",
         version: "weekly",
         libraries: ["places"]
     });
@@ -131,7 +131,7 @@ const getAccountToken = async () => {
             functionName: 'balanceOf',
             args: [account.address]
         })
-        balance.value = formatEther(tokenCon)
+        balance.value = parseFloat(formatEther(tokenCon)).toFixed(2)
     }
 }
 
@@ -142,23 +142,21 @@ const handleMintOp = async () => {
     // 4. mint
 
     minLoading.value = true
-    await store.switchNetwork().then(r => {
-        if (r) {
-            minLoading.value = false
+    store.switchNetwork().then(async r => {
+        let account = await getAccount()
+        let checkAllow = await checkApproval(account.address)
+    
+        if (new Big(youPay.value).cmp(new Big(checkAllow)) == 1) {
+    
+            await approveTokens(account.address)
+    
+        } else {
+            handleMint(account.address)
         }
+    }).catch(err => {
+        minLoading.value = false
     })
 
-    let account = await getAccount()
-    let checkAllow = await checkApproval(account.address)
-
-    if (new Big(youPay.value).cmp(new Big(checkAllow)) == 1) {
-
-        await approveTokens(account.address)
-
-    } else {
-        handleMint(account.address)
-    }
-   
 }
 
 const checkApproval = async (address) => {
@@ -230,9 +228,19 @@ const handleMint = async (address) => {
             hash: result.hash,
         }).then(r => {
             if (r.status == 'success') {
-                Notification.success({
+                const id = `${Date.now()}`;
+                const closeNotification =  Notification.success({
+                    id,
                     title: 'Successful!',
-                    duration: 3000
+                    duration: 0,
+                    footer: <Space>
+                        <Button type="primary" shape="round" size="small" onClick={() => {
+                            router.push('/dashboard')
+                            Notification.remove(id)
+                        }}>
+                            Go
+                        </Button>
+                    </Space>
                 })
             }
             minLoading.value = false
@@ -425,7 +433,7 @@ const goback = () => {
                 <div class="top flex items-center flex-wrap text-[0.36rem] px-[0.56rem] py-[0.4rem]">
                     <p class="font-bold whitespace-nowrap">Token Price:</p>
                     <span class="text-[#F6615A] font-bold mx-1 text-[0.42rem]">${{ tokenPrice }}</span>
-                    <span class="text-[#888A9A] whitespace-nowrap">≈ £{{ tokenPrice * commonstore.rate }}</span>
+                    <span class="text-[#888A9A] whitespace-nowrap">≈ £{{ (tokenPrice * commonstore.rate).toFixed(2) }}</span>
                 </div>
                 <div class="px-[0.56rem] py-[0.1rem]">
                     <div class="cell"><span class="label">Token name:</span><span class="value" v-if="tokenName">{{ tokenName }}</span><Loading class="ml-auto" v-else /></div>
@@ -479,7 +487,7 @@ const goback = () => {
                             <div class="flex items-center">
                                 <a-button @click="handleMaxBuy" class="max-button" type="text">Max</a-button>
                                 <div class="w-px h-3 bg-gray-200 mx-1"></div>
-                                <span>SFD-1</span>
+                                <span>{{ tokenName }}</span>
                             </div>
                         </template>
                     </a-input>
@@ -491,11 +499,11 @@ const goback = () => {
                         <div class="ml-auto i-cryptocurrency-color-usdt mx-1"></div>
                         <span>{{ symbol }}</span>
                     </div>
-                    <p class="tips">Projected Annual Return: 0</p>
+                    <p class="tips">Projected Annual Return: {{ detailContent?.projected_rental_yield }}%</p>
                 </div>
                 <div class="mt-4">
                     <a-button v-if="!store.address" @click="store.connectWallet()" type="primary" shape="round" long>Connect Wallet</a-button>
-                    <a-button v-else :disabled="!mintDisabled" :loading="minLoading" @click="handleMintOp" type="primary" shape="round" long>Comfirm</a-button>
+                    <a-button v-else :disabled="!mintDisabled" :loading="minLoading" @click="handleMintOp" type="primary" shape="round" long>Mint</a-button>
                 </div>
             </div>
         </aside>

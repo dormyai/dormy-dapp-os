@@ -55,3 +55,14 @@ export function getRate(data = {}) {
         data: qs.stringify(data),
     });
 }
+
+export function rentals(params = {}) {
+    return axios({
+        url: "/api/v1/property/rentals",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method: "get",
+        params,
+    });
+}

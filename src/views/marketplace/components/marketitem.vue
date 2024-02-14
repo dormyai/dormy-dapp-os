@@ -74,7 +74,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const commonstore = commonStore()
-
 const router = useRouter()
 const props = defineProps({
     item: {

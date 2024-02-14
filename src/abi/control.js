@@ -1,4 +1,4 @@
-export const controlAddress = '0xb1F611c1cFCd65094343F000c6FEa1Fa57341b90'
+export const controlAddress = '0x47CfE88C8aaaDFcFE14809eCdD1160BEF0bD6d91'
 export const controlAbi = [
     {
         "inputs": [],

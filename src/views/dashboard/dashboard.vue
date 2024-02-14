@@ -60,6 +60,19 @@ const handleTurnpage = (e) => {
     }
 }
 
+function formatNumber(value) {
+    if (!value) return 0;
+    if (value >= 1000000000) {
+        return (value / 1000000000).toFixed(2) + 'b';
+    } else if (value >= 1000000) {
+        return (value / 1000000).toFixed(2) + 'm';
+    } else if (value >= 1000) {
+        return (value / 1000).toFixed(2) + 'k';
+    } else {
+        return value.toFixed(2);
+    }
+}
+
 onMounted(() => {
     getDashboard()
     getList()
@@ -87,7 +100,7 @@ watch(
                 <div class="overview">
                     <p class="text-[#525767]">Total Investment</p>
                     <Loading class="price" v-if="detailLoading" />
-                    <h1 class="price" v-else>${{ dashboardDetail.detail?.total_investment || 0 }}</h1>
+                    <h1 class="price" v-else>${{ formatNumber(dashboardDetail.detail?.total_investment) }}</h1>
                     <!-- <div class="flex items-center gap-1">
                         <p class="text-[#6D6F80]">Appreciation</p>
                         <span class="text-[#16C784]">+$200</span>
@@ -97,7 +110,7 @@ watch(
                 <div class="overview">
                     <p class="text-[#755A4C]">Total Asset Value</p>
                     <Loading class="price" v-if="detailLoading" />
-                    <h1 class="price" v-else>${{ dashboardDetail.detail?.total_asset_value || 0 }}</h1>
+                    <h1 class="price" v-else>${{ formatNumber(dashboardDetail.detail?.total_asset_value)}}</h1>
                 </div>
                 <div class="overview">
                     <p class="text-[#443872]">Total Rental Yield</p>
@@ -116,7 +129,7 @@ watch(
         <div class="inner md:w-[28rem] mx-auto py-8">
             <h3 class="m-h3 flex items-center">
                 <span>Property Assets</span>
-                <a-button class="title-button ml-auto" size="small" type="outline" shape="round">Claim All Rents</a-button>
+                <!-- <a-button class="title-button ml-auto" size="small" type="outline" shape="round">Claim All Rents</a-button> -->
             </h3>
             <main class="main-list mt-2">
                 <header class="flex items-center px-[0.36rem] bg-[#F6F6F8] py-[0.5rem]">
