@@ -1,4 +1,4 @@
-export const dormyAddress = '0x8eeEB1bb6A80614C62A588264E131E5069D3fc47'
+export const dormyAddress = '0x762161D04DffD8068B026220E104264Eb7a39Ce2'
 export const dormyAbi = [
     {
         "inputs": [
@@ -14,7 +14,17 @@ export const dormyAbi = [
             },
             {
                 "internalType": "address",
+                "name": "_rentalManagement",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
                 "name": "_uToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_propertyDeed",
                 "type": "address"
             }
         ],
@@ -112,13 +122,19 @@ export const dormyAbi = [
                 "type": "uint256"
             },
             {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
             }
         ],
-        "name": "Mint",
+        "name": "MintDormy",
         "type": "event"
     },
     {
@@ -360,25 +376,6 @@ export const dormyAbi = [
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "tokenId_",
-                "type": "uint256"
-            }
-        ],
-        "name": "getSlotInfo",
-        "outputs": [
-            {
-                "internalType": "string",
-                "name": "",
-                "type": "string"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "address",
                 "name": "owner_",
                 "type": "address"
@@ -470,10 +467,36 @@ export const dormyAbi = [
     },
     {
         "inputs": [],
+        "name": "propertyDeed",
+        "outputs": [
+            {
+                "internalType": "contract IPropertyDeed",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "propertyManager",
         "outputs": [
             {
                 "internalType": "contract IPropertyManager",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rentalManagement",
+        "outputs": [
+            {
+                "internalType": "contract IRentalManagement",
                 "name": "",
                 "type": "address"
             }
@@ -742,7 +765,7 @@ export const dormyAbi = [
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "tokenId_",
+                "name": "tokenId",
                 "type": "uint256"
             }
         ],
@@ -870,5 +893,40 @@ export const dormyAbi = [
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "erc20Token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdrawETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
     }
 ]

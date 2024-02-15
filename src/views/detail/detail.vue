@@ -71,12 +71,12 @@ onMounted(async () => {
     minIncrement.value = calculatePrice(ment.minIncrement)
 
     getAccountToken()
-
     initMap()
+
 })
 
 const initMap = () => {
-    let position = { lat: Number(detailContent.value.latitude) || 51.504528, lng: Number(detailContent.value.longitude) || -0.128245 }
+    let position = { lat: Number(55.943286756931734) || 51.504528, lng: Number(-3.1878250794248655) || -0.128245 }
     const loader = new Loader({
         apiKey: "AIzaSyDuvfD-QZ9riDmGljBVe9wQiuXgKvZbY5E",
         version: "weekly",
@@ -142,7 +142,7 @@ const handleMintOp = async () => {
     // 4. mint
 
     minLoading.value = true
-    store.switchNetwork().then(async r => {
+    store.switchNetworks().then(async r => {
         let account = await getAccount()
         let checkAllow = await checkApproval(account.address)
     

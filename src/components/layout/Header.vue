@@ -38,7 +38,8 @@ watch(() => state.open, async (val) => {
 })
 
 onMounted(async () => {
-    authStore.setCurNetwork(getNetwork().chain)
+    let network = await getNetwork()
+    authStore.setCurNetwork(network.chain)
 
     if (!!authStore.token) {
         let account = await getAccount()
@@ -46,6 +47,7 @@ onMounted(async () => {
     }
 
     watchNetwork((e) => {
+        console.log('e:::::', e.chain)
         authStore.setCurNetwork(e.chain)
     })
 

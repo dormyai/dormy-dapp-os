@@ -63,5 +63,8 @@ const handleClose = () => {
    .arco-modal {
         max-width: 90% !important;
    }
+   .arco-modal-body {
+    padding-top: 10px;
+   }
 }
 </style>

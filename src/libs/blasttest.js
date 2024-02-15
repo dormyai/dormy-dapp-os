@@ -13,7 +13,7 @@ export const blastsepolia = {
     default: { http: ['https://sepolia.blast.io'] },
   },
   blockExplorers: {
-    etherscan: { name: 'BlastSepolia', url: 'https://168587773.testnet.testnet.routescan.io' },
-    default: { name: 'BlastSepolia', url: 'https://168587773.testnet.testnet.routescan.io' },
+    etherscan: { name: 'BlastSepolia', url: 'https://testnet.blastscan.io/' },
+    default: { name: 'BlastSepolia', url: 'https://testnet.blastscan.io/' },
   }
 }

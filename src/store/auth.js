@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import { getToken, setToken, removeToken } from '@/utils'
 import { userLogin, loginUserInfo, signMsg, loginByAddr } from '@/api'
-import { disconnect, switchNetwork, signMessage } from '@wagmi/core';
+import { disconnect, getNetwork, signMessage } from '@wagmi/core';
 import { useWeb3Modal } from '@web3modal/wagmi/vue'
 import { wagmiConfig, chains } from '@/libs/wagmi'
 import { Notification } from '@arco-design/web-vue';
+import { toHex } from 'viem'
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({ 
+    state: () => ({
         _address: null,
         _sign: null,
         _token: getToken() || '',
@@ -45,18 +46,63 @@ export const useAuthStore = defineStore('auth', {
             const modal = useWeb3Modal()
             modal.open({ view: 'Networks' })
         },
-        switchNetwork() {
-            return new Promise((resolve, reject) => {
-                if (this._network.id == import.meta.env.VITE_BASE_CHAINID) {
+        switchNetworks() {
+            return new Promise(async (resolve, reject) => {
+                let chainId = import.meta.env.VITE_BASE_CHAINID
+                if (this._network.id == chainId) {
                     resolve('default')
                 } else {
-                    switchNetwork({ chainId: chains[0].id }).then(res => {
-                        console.log('switchNetwork:', res)
-                        this.setCurNetwork(res)
-                        resolve('change')
-                    }).catch(() => {
-                        reject()
-                    })
+                    if (window.ethereum) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{
+                                    chainId: toHex(168587773) // 目标链ID
+                                }]
+                            })
+                            setTimeout(async () => {
+                                let network = await getNetwork()
+                                if (network.chain.id == chainId) {
+                                    resolve('change')
+                                }
+                            }, 500);
+                        } catch (e) {
+                            reject()
+                            if (e.code === 4902) {
+                                try {
+                                    console.log('wallet_addEthereumChain');
+                                    await window.ethereum.request({
+                                        method: 'wallet_addEthereumChain',
+                                        params: [
+                                            {
+                                                chainId: toHex(168587773), // 目标链ID
+                                                chainName: 'Blast Sepolia',
+                                                nativeCurrency: {
+                                                    name: 'Blast Sepolia',
+                                                    symbol: 'ETH',
+                                                    decimals: 18
+                                                },
+                                                rpcUrls: ['https://sepolia.blast.io'], // 节点
+                                                blockExplorerUrls: ['https://testnet.blastscan.io/']
+                                            }
+                                        ]
+                                    })
+                                } catch (ee) {
+                                    //
+                                    reject()
+                                }
+                            }
+                        }
+
+                    }
+                    // switchNetwork({ chainId: import.meta.env.VITE_BASE_CHAINID }).then(res => {
+                    //     console.log('switchNetwork:', res)
+                    //     this.setCurNetwork(res)
+                    //     resolve('change')
+                    // }).catch((err) => {
+                    //     console.log('switchNetwork err:', err)
+                    //     reject()
+                    // })
                 }
             })
         },
@@ -71,7 +117,7 @@ export const useAuthStore = defineStore('auth', {
                         await this.loginWithToken()
                         resolve()
                     }
-                })  
+                })
             })
         },
         loginWithSignatureStrict() {
@@ -137,7 +183,7 @@ export const useAuthStore = defineStore('auth', {
                         })
                     }
                 })
-            })  
+            })
         },
         logout() {
             removeToken()

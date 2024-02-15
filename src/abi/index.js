@@ -3,4 +3,4 @@ export * from './propertyManager..js';
 export * from './control.js';
 export * from './rent.js';
 
-export const usdtAddress = '0x6e27Bf26b5b6807D16Ff86fa674F4d3229DA3774'
+export const usdtAddress = '0x35894cBf77a17A9d9949b10EAac51B1c794411A4'

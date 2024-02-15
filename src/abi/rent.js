@@ -1,4 +1,4 @@
-export const rentAddress = '0x1D5f0f2b15B8625e22a99B621A5CC7B2721b4cBE'
+export const rentAddress = '0xD2Ebcc4FE11d0153D7E9300fE7521b533a2fCe34'
 export const rentAbi = [
     {
         "inputs": [

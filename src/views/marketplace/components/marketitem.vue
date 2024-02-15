@@ -42,11 +42,11 @@
             <div class="price bg-[#F6F6F6] grid grid-cols-2">
                 <div>
                     <h1>Total Price</h1>
-                    <h2><strong>${{ item.property_info.total_investment_value }}</strong> ≈ £{{ item.property_info.total_investment_value * commonstore.rate }}</h2>
+                    <h2><strong>${{ formatNumber(item.property_info.total_investment_value) }}</strong> ≈ £{{ formatNumber(item.property_info.total_investment_value * commonstore.rate) }}</h2>
                 </div>
                 <div>
                     <h1>Sqft Price</h1>
-                    <h2><strong>${{ item.property_chain_info.token_price }}</strong> ≈ £{{ item.property_chain_info.token_price * commonstore.rate }}</h2>
+                    <h2><strong>${{ formatNumber(item.property_chain_info.token_price) }}</strong> ≈ £{{ formatNumber(item.property_chain_info.token_price * commonstore.rate) }}</h2>
                 </div>
             </div>
             <div class="info flex items-center mt-1">
@@ -92,6 +92,18 @@ const calculateStock = computed(() => {
     if (!mentCon.value) return null
     return new Big(mentCon.value.tokenAmount).minus(mentCon.value.soldQuantity)
 })
+function formatNumber(value) {
+    if (!value) return 0;
+    if (value >= 1000000000) {
+        return (value / 1000000000).toFixed(2) + 'b';
+    } else if (value >= 1000000) {
+        return (value / 1000000).toFixed(2) + 'm';
+    } else if (value >= 1000) {
+        return (value / 1000).toFixed(2) + 'k';
+    } else {
+        return value.toFixed(2);
+    }
+}
 
 onMounted(async () => {
     

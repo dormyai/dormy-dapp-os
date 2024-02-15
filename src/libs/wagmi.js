@@ -14,14 +14,12 @@ const projectId = '0a3bd06ad2697a71e4662e217f1a4189'
 
 // 2. Configure wagmi client
 const { chains, publicClient } = configureChains(
-    [polygonMumbai, mainnet, polygon, blastsepolia],
+    [mainnet, polygon, blastsepolia, polygonMumbai],
     [
-        // walletConnectProvider({ projectId }), 
-        // publicProvider(),
         jsonRpcProvider({
             rpc: (chain) => ({
                 // http: `https://rpc-mumbai.maticvigil.com`,
-                http: `https://rpc-mumbai.maticvigil.com`,
+                http: `https://sepolia.blast.io`,
             }),
         }),
     ]
@@ -40,7 +38,7 @@ export const wagmiConfig = createConfig({
         new WalletConnectConnector({ chains, options: { projectId, showQrModal: false, metadata } }),
         new EIP6963Connector({ chains }),
         new InjectedConnector({ chains, options: { shimDisconnect: true } }),
-        new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } })
+        // new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } })
     ],
     publicClient
 })
@@ -49,6 +47,7 @@ export const wagmiConfig = createConfig({
 createWeb3Modal({ 
     wagmiConfig, 
     projectId, 
+    defaultChain: blastsepolia,
     chains,
     themeMode: 'dark',
     themeVariables: {

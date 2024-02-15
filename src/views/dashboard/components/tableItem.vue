@@ -67,6 +67,8 @@ const claimFun = async(slotid, starttime, endtime) => {
                     duration: 3000
                 })
                 claimLoading.value = false
+
+                getRentParams(slotid, starttime, endtime)
             }
         })
     } catch(err) {

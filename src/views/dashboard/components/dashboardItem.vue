@@ -97,14 +97,14 @@ onMounted(() => {
             </div>
         </div>
         <div class="w-[2rem]">{{ item.property_user_summary.amount }}</div>
-        <div class="w-[2.5rem]">--</div>
+        <div class="w-[2.5rem]">{{ (item.property_user_summary.amount * item.property_chain_info.token_price).toFixed(2)}}$</div>
         <div class="w-[3.6rem]">{{ dateFormat(item.property_user_summary.start_time) }}</div>
         <div class="w-[3.2rem]">--</div>
         <div class="w-[3.5rem]">
             <a-button class="button" shape="round" size="small" @click="handleShowRent(item)">Claim Rents</a-button>
         </div>
 
-        <Dialog v-model="showRent" :width="'24rem'" @close="handleClose">
+        <Dialog v-model="showRent" :width="'24rem'" @close="handleClose" :title="'Rental Record'">
             <template #main>
                 <header class="header flex items-center px-[0.36rem] bg-[#F6F6F8] py-[0.5rem]">
                     <div class="w-[4rem]">Start time</div>
@@ -123,7 +123,7 @@ onMounted(() => {
             </template>
         </Dialog>
 
-        <Dialog v-model="showPreviewImage" :width="'15rem'">
+        <Dialog v-model="showPreviewImage" :width="'15rem'" title="On-chain property deed">
             <template #main>
                 <img class="w-full" :src="previewImageData">
             </template>
