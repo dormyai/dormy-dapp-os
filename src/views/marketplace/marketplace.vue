@@ -27,7 +27,6 @@ const getData = () => {
             if (queryParams.pn == 1) {
                 list.value = res.data.result
             }
-            // TODO: 翻页
         }
         loading.value = false
     })

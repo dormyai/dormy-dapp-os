@@ -47,7 +47,6 @@ const handleShowRent = (item) => {
             
         }
         loading.value = false
-        console.log('res:::::', res)
     })
 }
 

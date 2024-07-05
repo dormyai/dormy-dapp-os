@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { readContract, getAccount, writeContract, prepareWriteContract, getContract, waitForTransaction } from '@wagmi/core'
+import { readContract, getAccount, writeContract, prepareWriteContract, waitForTransaction } from '@wagmi/core'
 import { rentAddress, rentAbi } from '@/abi'
 import { Notification } from '@arco-design/web-vue';
 import { formatEther } from 'viem'
@@ -32,10 +32,8 @@ const getRentParams = async (slotid, starttime, endtime) => {
             functionName: 'queryRent',
             args: [account.address, slotid, starttime, endtime]
         })
-        console.log('params>>>', params)
         dividends.value = params
         readingContract.value = false
-        // claimFun(slotid, starttime, endtime)
     } catch(err) {
         readingContract.value = false
     }

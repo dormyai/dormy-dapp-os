@@ -10,9 +10,6 @@ let routes = [
     path: "/",
     component: () => import("@/views/home/home.vue"),
     children: [
-
-      // 个人模块
-      // ...User,
       
       {
         path: '/',

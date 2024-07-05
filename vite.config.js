@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import UnoCSS from 'unocss/vite'
@@ -9,63 +9,61 @@ import { ArcoResolver } from 'unplugin-vue-components/resolvers';
 import postCssPxToRem from 'postcss-pxtorem';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    UnoCSS(),
-    vueJsx(),
-    AutoImport({
-      resolvers: [ArcoResolver()],
-      eslintrc: {
-        enabled: true, // <-- this
-      },
-    }),
-    Components({
-      resolvers: [
-        ArcoResolver({
-          sideEffect: true,
-          importStyle: 'less',
-        })
-      ]
-    })
-  ],
-  css: {
-    preprocessorOptions: {
-      less: {
-        modifyVars: {
-          'border-radius-medium': '8px',
-          // 'arcoblue-6': '#f85959',
-          // 'color-primary-6': '#13c2c2',
-          // 'color-primary-6': `rgb(var(~'@{arco-cssvars-prefix}-green-6'))`
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd());
+  return {
+    plugins: [
+      vue(),
+      UnoCSS(),
+      vueJsx(),
+      AutoImport({
+        resolvers: [ArcoResolver()],
+        eslintrc: {
+          enabled: true,
         },
-        javascriptEnabled: true,
+      }),
+      Components({
+        resolvers: [
+          ArcoResolver({
+            sideEffect: true,
+            importStyle: 'less',
+          })
+        ]
+      })
+    ],
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            'border-radius-medium': '8px',
+          },
+          javascriptEnabled: true,
+        }
+      },
+      postcss:{
+        plugins:[
+          postCssPxToRem({
+            rootValue: 50,
+            propList:['*'],
+            exclude: /node_modules/i
+          })
+        ]
       }
     },
-    postcss:{
-      plugins:[
-        postCssPxToRem({
-          rootValue: 50,
-          propList:['*'],
-          exclude: /node_modules/i
-        })
-      ]
-    }
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src') 
-    }
-  },
-  server: {
-    host: '0.0.0.0',
-    proxy: {
-      '/localapi': {
-        // target: "http://10.17.16.114:8888",
-        target: "https://dev-api.dormy.ai",
-        // target: "https://www.vega.fan/v1/",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/localapi/, '')
-      },
-    }
-  }, 
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src') 
+      }
+    },
+    server: {
+      host: '0.0.0.0',
+      proxy: {
+        [env.VITE_APP_BASE_API]: {
+          target: env.VITE_PROXY_DOMAIN,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
+        },
+      }
+    }, 
+  }
 })

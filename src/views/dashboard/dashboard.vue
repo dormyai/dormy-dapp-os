@@ -101,11 +101,6 @@ watch(
                     <p class="text-[#525767]">Total Investment</p>
                     <Loading class="price" v-if="detailLoading" />
                     <h1 class="price" v-else>${{ formatNumber(dashboardDetail.detail?.total_investment) }}</h1>
-                    <!-- <div class="flex items-center gap-1">
-                        <p class="text-[#6D6F80]">Appreciation</p>
-                        <span class="text-[#16C784]">+$200</span>
-                        <a-tag class="ml-auto" color="#16C784">+10%</a-tag>
-                    </div> -->
                 </div>
                 <div class="overview">
                     <p class="text-[#755A4C]">Total Asset Value</p>
@@ -129,7 +124,6 @@ watch(
         <div class="inner md:w-[28rem] mx-auto py-8">
             <h3 class="m-h3 flex items-center">
                 <span>Property Assets</span>
-                <!-- <a-button class="title-button ml-auto" size="small" type="outline" shape="round">Claim All Rents</a-button> -->
             </h3>
             <main class="main-list mt-2">
                 <header class="flex items-center px-[0.36rem] bg-[#F6F6F8] py-[0.5rem]">
@@ -149,7 +143,6 @@ watch(
                     <Empty v-if="!listLoading && propertyList.list?.length == 0" class="py-8" />
                     <div class="list-box">
                         <DashboardItem v-for="item,index in propertyList.list" :item="item" :key="index" />
-                        <!-- <div class="text-center py-4" v-if="listLoading"><Loading /></div> -->
                     </div>
                     <div class="text-right mt-3 flex justify-end">
                         <a-pagination :size="'small'" :current="listParams.pn" :total="listTotal" @change="handleTurnpage"/>

@@ -86,7 +86,7 @@ const mentCon = ref(null)
 
 const currentSwipper = ref(0)
 const onSwiper = (swiper) => {
-    // console.log(swiper);
+    
 }
 const calculateStock = computed(() => {
     if (!mentCon.value) return null

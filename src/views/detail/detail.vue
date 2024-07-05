@@ -15,7 +15,6 @@ import { Loader } from '@googlemaps/js-api-loader';
 import Loading from '@/components/Loading.vue'
 import Image from '@/components/Image.vue'
 import Big from 'big.js';
-import Decimal from 'decimal.js';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -38,7 +37,6 @@ const maxPurchase = ref(null)
 const minIncrement = ref(null)
 const minLoading = ref(false)
 
-const approveTokenHash = ref('')
 const mintHash = ref('')
 
 const youBuy = ref(1)
@@ -78,7 +76,7 @@ onMounted(async () => {
 const initMap = () => {
     let position = { lat: Number(55.943286756931734) || 51.504528, lng: Number(-3.1878250794248655) || -0.128245 }
     const loader = new Loader({
-        apiKey: "AIzaSyDuvfD-QZ9riDmGljBVe9wQiuXgKvZbY5E",
+        apiKey: import.meta.env.VITE_GOOGLE_APIKEY,
         version: "weekly",
         libraries: ["places"]
     });
@@ -136,7 +134,7 @@ const getAccountToken = async () => {
 }
 
 const handleMintOp = async () => {
-    // 1. 钱包链接
+    // 1. connect wallet
     // 2. checkApproval
     // 3. approveTokens
     // 4. mint
@@ -246,7 +244,6 @@ const handleMint = async (address) => {
             minLoading.value = false
         })
     } catch (err) {
-        console.log('err:', err)
         minLoading.value = false
         
         return Notification.error({
@@ -274,9 +271,9 @@ const onSlideChange = (e) => {
 }
 
 const handleMaxBuy = () => {
-    let buyMaxPurchase = maxPurchase.value // 合约允许最个数
-    let BalancePurchase = Math.floor(balance.value / tokenPrice.value) // 账户余额能买到的最个数
-    let max = buyMaxPurchase > BalancePurchase ? BalancePurchase : buyMaxPurchase // 得到允许范围内的最大值
+    let buyMaxPurchase = maxPurchase.value // maximum
+    let BalancePurchase = Math.floor(balance.value / tokenPrice.value) // The maximum number of items that can be purchased with the account balance
+    let max = buyMaxPurchase > BalancePurchase ? BalancePurchase : buyMaxPurchase // Get the maximum value within the allowed range
     youBuy.value = max
 }
 
@@ -306,7 +303,6 @@ const goback = () => {
                 @slideChange="onSlideChange"
                 >
                     <swiper-slide v-for="item,index in detailMedia" :key="index" class="swiper-slide">
-                        <!-- <img class="thumbnail" :src="item.url" alt=""> -->
                         <Image class="thumbnail" :src="item.url" />
                     </swiper-slide>
                 </swiper>
@@ -354,19 +350,15 @@ const goback = () => {
                     <section class="section-block">
                         <h2 class="c-h3">Property Management and Insurance</h2>
                         <p>{{ detailContent.property_insurance }}</p>
-                        <!-- <p>· Managed by Ernest &Manson Property Management</p> -->
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">Tenancy</h2>
                         <p>{{ detailContent.tenancy }}</p>
-                        <!-- <p>· One year tenancy of Room A       (1 Dec, 2023 - 30, Nov, 2024)</p>
-                        <p>· Two year tenancy of Room B       (1 Dec, 2023 - 30, Nov, 2025)</p> -->
                     </section>
                     <div class="divide"></div>
                     <section class="section-block">
                         <h2 class="c-h3">Neighbourhood</h2>
                         <p>{{ detailContent.neighbourhood }}</p>
-                        <!-- <p class="flex items-center justify-between"><span>· University College of London (UCL)</span> <span class="gray">1 miles</span></p> -->
                     </section>
                     <section class="section-block">
                         <h2 class="c-h3">On the Map</h2>

@@ -15,14 +15,12 @@
             <div class="right mt-4 md:mt-0 md:ml-auto flex flex-col items-center">
                 <h3 class="font-bold text-[0.51rem]">Join our Community</h3>
                 <div v-if="isLight" class="flex items-center gap-x-[0.6rem] my-3">
-                    <!-- <a href="https://discord.gg/Rcmgth4a" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="DISCORDW" alt=""></a> -->
-                    <a href="https://twitter.com/Dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTERW" alt=""></a>
-                    <a href="https://medium.com/@dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MDW" alt=""></a>
+                    <a :href="twitterUrl" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTERW" alt=""></a>
+                    <a :href="mediumUrl" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MDW" alt=""></a>
                 </div>
                 <div v-else class="flex items-center gap-x-[0.6rem] my-3">
-                    <!-- <a href="https://discord.gg/Rcmgth4a" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="DISCORD" alt=""></a> -->
-                    <a href="https://twitter.com/DormyAI" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTER" alt=""></a>
-                    <a href="https://medium.com/@dormydotai" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MD" alt=""></a>
+                    <a :href="twitterUrl" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="TWITTER" alt=""></a>
+                    <a :href="mediumUrl" target="_blank" class="hover:opacity-80"><img class="w-[1.12rem]" :src="MD" alt=""></a>
                 </div>
                 <p class="text-[#808080] text-[0.36rem]">Copyright © 2023 DormyAI</p>
             </div>
@@ -38,15 +36,16 @@ import qs from 'qs';
 import { Notification } from '@arco-design/web-vue';
 
 const LOGO = new URL('@/assets/images/logo_footer.png', import.meta.url).href
-const DISCORD = new URL('@/assets/images/icon-discord.png', import.meta.url).href
 const TWITTER = new URL('@/assets/images/icon-twitter.png', import.meta.url).href
 const MD = new URL('@/assets/images/icon-md.png', import.meta.url).href
-const DISCORDW = new URL('@/assets/images/icon-discord-w.png', import.meta.url).href
 const TWITTERW = new URL('@/assets/images/icon-twitter-w.png', import.meta.url).href
 const MDW = new URL('@/assets/images/icon-md-w.png', import.meta.url).href
 const MESS = new URL('@/assets/images/icon-message.png', import.meta.url).href
 const router = useRoute()
 const isLight = ref(false)
+const sign = ref(import.meta.env.VITE_SPECIAL_SIGN)
+const twitterUrl = ref(import.meta.env.VITE_TWITTER_LINK)
+const mediumUrl = ref(import.meta.env.VITE_MEDIUM_LINK)
 
 watchEffect(() => {
   if (router.path === '/') {
@@ -75,7 +74,7 @@ const handleSubscribe = async () => {
         url: "/api/v1/common/mail_subscribe",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "sign": "5Z4zWZO02eapg9igCUtwk5Z4zWZpg9igCUtwk5Z4zWZO02eapg9igCUtwk"
+          "sign": sign
         },
         method: "post",
         data: qs.stringify({

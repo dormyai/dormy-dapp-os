@@ -51,10 +51,12 @@ export function setupAxios() {
       }
     },
     error => {
-      try {
+      if (response.data.code == 100008) {
+        authStore.loginWithSignatureStrict()
+      } else if (error.response.data.code == 100005) {
+        authStore.logout()
+      } else {
         return Promise.reject(error)
-      } catch (e) {
-        console.log('error caught', e);
       }
     }
   )

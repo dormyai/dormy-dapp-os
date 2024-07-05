@@ -3,7 +3,6 @@ import { getToken, setToken, removeToken } from '@/utils'
 import { userLogin, loginUserInfo, signMsg, loginByAddr } from '@/api'
 import { disconnect, getNetwork, signMessage } from '@wagmi/core';
 import { useWeb3Modal } from '@web3modal/wagmi/vue'
-import { wagmiConfig, chains } from '@/libs/wagmi'
 import { Notification } from '@arco-design/web-vue';
 import { toHex } from 'viem'
 
@@ -37,7 +36,7 @@ export const useAuthStore = defineStore('auth', {
         },
         connectWallet() {
             const modal = useWeb3Modal()
-            // 未登录，先召唤起登录
+            // not login
             if (!this._token) {
                 modal.open()
             }
@@ -57,7 +56,7 @@ export const useAuthStore = defineStore('auth', {
                             await window.ethereum.request({
                                 method: 'wallet_switchEthereumChain',
                                 params: [{
-                                    chainId: toHex(168587773) // 目标链ID
+                                    chainId: toHex(168587773) // Target chain id
                                 }]
                             })
                             setTimeout(async () => {
@@ -75,14 +74,14 @@ export const useAuthStore = defineStore('auth', {
                                         method: 'wallet_addEthereumChain',
                                         params: [
                                             {
-                                                chainId: toHex(168587773), // 目标链ID
+                                                chainId: toHex(168587773), // Target chain id
                                                 chainName: 'Blast Sepolia',
                                                 nativeCurrency: {
                                                     name: 'Blast Sepolia',
                                                     symbol: 'ETH',
                                                     decimals: 18
                                                 },
-                                                rpcUrls: ['https://sepolia.blast.io'], // 节点
+                                                rpcUrls: ['https://sepolia.blast.io'],
                                                 blockExplorerUrls: ['https://testnet.blastscan.io/']
                                             }
                                         ]
@@ -95,14 +94,6 @@ export const useAuthStore = defineStore('auth', {
                         }
 
                     }
-                    // switchNetwork({ chainId: import.meta.env.VITE_BASE_CHAINID }).then(res => {
-                    //     console.log('switchNetwork:', res)
-                    //     this.setCurNetwork(res)
-                    //     resolve('change')
-                    // }).catch((err) => {
-                    //     console.log('switchNetwork err:', err)
-                    //     reject()
-                    // })
                 }
             })
         },
@@ -128,7 +119,7 @@ export const useAuthStore = defineStore('auth', {
                     if (res.code == 200) {
 
                         try {
-                            // 用户签名信息
+                            // signature
                             this._sign = await signMessage({ message: res.data.msg })
                             await this.getLoginToken()
                             await this.loginWithToken()

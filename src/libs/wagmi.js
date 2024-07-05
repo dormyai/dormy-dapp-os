@@ -18,7 +18,6 @@ const { chains, publicClient } = configureChains(
     [
         jsonRpcProvider({
             rpc: (chain) => ({
-                // http: `https://rpc-mumbai.maticvigil.com`,
                 http: `https://sepolia.blast.io`,
             }),
         }),
@@ -38,7 +37,6 @@ export const wagmiConfig = createConfig({
         new WalletConnectConnector({ chains, options: { projectId, showQrModal: false, metadata } }),
         new EIP6963Connector({ chains }),
         new InjectedConnector({ chains, options: { shimDisconnect: true } }),
-        // new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } })
     ],
     publicClient
 })

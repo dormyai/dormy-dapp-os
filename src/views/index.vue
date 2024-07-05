@@ -177,14 +177,9 @@ const customStyle = ref({
     fontSize: '0.36rem',
 })
 
-const store = useAuthStore()
-const handleIncrece = () => {
-    store.increment()
-}
-
 const handlePostTwitter = () => {
     let text = `I am already prepared to explore the new era of %23RWAFi.%0a%0a@DormyAI is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating!%0a%0aDiscover more at`
-    let url = encodeURIComponent(`https://Dormy.ai\r`)
+    let url = encodeURIComponent(`${import.meta.env.VITE_TWITTER_SHARE_LINK}\r`)
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}&hashtags=RWA,100xGems`)
 }
 

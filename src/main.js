@@ -21,12 +21,11 @@ async function setupApp() {
 
     setupAxios()
 
-    // 路由
+    // router
     await setupRouter(app)
 
     appLoading.unmount();
     
-    // 挂载
     app.mount('#app');
 }
 

@@ -23,12 +23,6 @@ watchEffect(() => {
     }
 }, [authStore.address])
 
-const handlePostTwitter = () => {
-    let text = `I am already prepared to explore the new era of %23RWAFi.%0a%0a@DormyAI is a bridge connecting fractional real estate and DeFi. It allows you to farm without impermanent loss, and your assets are also continuously appreciating!%0a%0aDiscover more at`
-    let url = encodeURIComponent(`https://Dormy.ai\r`)
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}&hashtags=RWA,100xGems`)
-}
-
 // w3m 的弹窗
 watch(() => state.open, async (val) => {
     if(!val && !authStore.token) {
@@ -47,13 +41,11 @@ onMounted(async () => {
     }
 
     watchNetwork((e) => {
-        console.log('e:::::', e.chain)
         authStore.setCurNetwork(e.chain)
     })
 
     watchAccount((a) => {
         if (a.address && !!authStore.token) {
-            console.log('a:', a)
             authStore.setAddress(a.address)
             authStore.loginWithSignature()
         }
@@ -82,7 +74,6 @@ const handleLogout = () => {
             <router-link to="/">Home</router-link>
             <router-link to="/market">Marketplace</router-link>
             <router-link to="/dashboard">Dashboard</router-link>
-            <!-- <router-link to="/">Docs</router-link> -->
             <div class="flex items-center gap-x-2 ml-auto">
                 <a-button type="outline" v-if="authStore.user" shape="round" @click="handleChangeNetwork">{{ authStore.network?.name }}</a-button>
     
@@ -93,7 +84,6 @@ const handleLogout = () => {
                             <a-avatar :size="28" :style="{ backgroundColor: '#F7A2CA' }"><IconUser /></a-avatar>
                             <span class="ml-1">{{ authStore.user.name }}</span>
                         </a-doption>
-                        <!-- <a-doption>Verification: Successful</a-doption> -->
                         <a-doption @click="handleLogout">Logout</a-doption>
                     </template>
                 </a-dropdown>
